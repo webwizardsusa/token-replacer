@@ -1,0 +1,270 @@
+.fp-rich-editor-toolbar {
+    @apply dark:bg-gray-800 px-2 rounded-t-lg;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid gray;
+    flex-wrap: wrap;
+}
+
+.fp-rich-editor-toolbar-sticky {
+    position: sticky;
+}
+
+.ProseMirror:focus-visible {
+    outline: none;
+}
+
+.fp-rich-editor-button {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+
+    svg {
+        fill: currentColor;
+    }
+}
+
+.fp-rich-editor-button:disabled {
+    opacity: 0.5;
+}
+
+.fp-rich-editor-separator {
+    height: 24px;
+    margin: 0 12px;
+    @apply border-l border-gray-950/10 dark:border-white/20;
+}
+
+.fp-rich-editor-active-btn {
+    @apply bg-blue-500/90;
+}
+
+
+
+.fp-rich-editor p.is-editor-empty:first-child::before {
+    color: #adb5bd;
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+}
+
+.fp-rich-editor p.is-editor-empty:first-child::before {
+    @apply text-black/50 dark:text-white/50;
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+}
+
+.fp-rich-editor p {
+    margin-bottom: 15px;
+}
+
+.fp-rich-editor-content a {
+    @apply text-blue-500 dark:text-blue-400;
+    text-decoration: underline;
+}
+
+.fp-rich-editor-content {
+    h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    h4 {
+        font-size: 1.25rem;
+        margin-bottom: 15px;
+    }
+
+    h5 {
+        font-size: 1.15rem;
+        margin-bottom: 15px;
+    }
+}
+
+.fp-rich-editor-content blockquote {
+    margin-left: 25px;
+}
+
+.fp-rich-editor-content ul {
+    @apply list-disc pl-5 space-y-2;
+}
+
+.fp-rich-editor-content ol {
+    @apply list-decimal pl-5 space-y-2;
+}
+.fp-rich-editor-popper {
+    @apply border border-gray-950/10 dark:border-white/20 rounded-lg shadow-lg;
+
+}
+.fp-rich-editor-popper-inner {
+    @apply p-2 bg-white dark:bg-gray-800 ;
+    z-index:100;
+    position: relative;
+}
+
+
+
+
+.fp-rich-editor-popper-actions {
+ @apply mt-4;
+}
+
+.fp-rich-editor-popper button {
+    @apply relative
+    grid-flow-col
+    items-center
+    justify-center
+    font-semibold
+    outline-none
+    transition
+    duration-75
+    focus-visible:ring-2
+    rounded-lg
+    gap-1.5
+    px-3
+    py-2
+    text-sm
+    inline-grid
+    shadow-sm
+    bg-custom-600
+    text-white
+    hover:bg-custom-500
+    focus-visible:ring-custom-500/50
+    dark:bg-custom-500
+    dark:hover:bg-custom-400
+    dark:focus-visible:ring-custom-400/50
+}
+
+.fp-rich-editor-popper button.btn-primary {
+    @apply bg-primary-600
+    text-white
+    hover:bg-primary-500
+    focus-visible:ring-custom-500/50
+    dark:bg-primary-500
+    dark:hover:bg-primary-400
+    dark:focus-visible:ring-custom-400/50
+}
+
+.fp-rich-editor-popper button:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.fp-rich-editor-popper button.btn-secondary {
+    @apply bg-gray-600
+    text-white
+    hover:bg-gray-600
+    focus-visible:ring-custom-500/50
+    dark:bg-gray-500
+    dark:hover:bg-gray-500
+    dark:focus-visible:ring-custom-400/50
+}
+
+.fp-rich-editor-popper-title {
+    @apply text-lg font-semibold mb-2;
+}
+
+.fp-rich-editor-popper input {
+    @apply
+    flex
+    rounded-lg
+    shadow-sm
+    ring-1
+    transition
+    duration-75
+    bg-white
+    dark:bg-white/5
+    focus:ring-2
+    ring-gray-950/10
+    dark:ring-white/20
+    focus:ring-primary-600
+    dark:focus:ring-primary-500
+    overflow-hidden;
+
+    border: none;
+}
+
+.fp-rich-editor-popper label {
+    @apply block mb-2 text-sm font-medium leading-6 text-gray-950 dark:text-white;
+
+}
+
+.fp-rich-editor-popper-arrow {
+    margin-top: -9px;
+    z-index: 1;
+
+    .arrow-inner {
+        width: 16px;
+        height: 16px;
+        @apply
+        bg-white
+        dark:bg-gray-800
+        border
+        border-gray-950/10 dark:border-white/20
+        rotate-45
+        ;
+        border-width: 2px;
+    }
+
+}
+
+.fp-rich-editor-select-button {
+    @apply block
+    border-none
+    bg-transparent
+    py-1
+    pe-8
+    text-base
+    text-gray-950
+    transition
+    duration-75
+    focus:ring-0
+    disabled:text-gray-500
+    disabled:[-webkit-text-fill-color:theme(colors.gray.500)]
+    dark:text-white
+    dark:disabled:text-gray-400
+    dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)]
+    sm:text-sm
+    sm:leading-6
+    [&_optgroup]:bg-white
+    [&_optgroup]:dark:bg-gray-900
+    [&_option]:bg-white
+    [&_option]:dark:bg-gray-900
+    ps-3;
+}
+
+
+[wire\:key*="actions.view-source.modal"] {
+    .fi-fo-component-ctn {
+        height: 100%;
+        > div {
+            height: 100%;
+
+            .fi-fo-field-wrp {
+                height: 100%;
+
+                > div {
+                    height: 100%;
+                    grid-template-rows: auto 1fr;
+                    .source_code_editor * {
+                        height: 100% !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.editor-has-focus {
+    @apply  ring-2 ring-primary-600  dark:ring-primary-500;
+}
+
+.fp-toolbar-spacer {
+    flex: 1;
+}

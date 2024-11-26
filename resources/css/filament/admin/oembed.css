@@ -1,0 +1,13 @@
+.oembed-preview{
+    @apply bg-gray-300 dark:bg-gray-600 text-center border border-dashed;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    h5 {
+        @apply font-bold;
+    }
+}
+.oembed-preview.ProseMirror-selectednode {
+    @apply border-primary-500;
+}
