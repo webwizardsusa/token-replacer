@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\PostResource\Pages;
+use App\Forms\Components\Editor\Plugins\Image\Image;
 use App\Forms\Components\Editor\Plugins\OEmbed\Oembed;
 use Filapress\RichEditor\Plugins\Blockquote;
 use Filapress\RichEditor\Plugins\Blocks;
@@ -44,6 +45,7 @@ class PostResource extends Resource
                         Blockquote::make(),
                         OrderedList::make(),
                         UnorderedList::make(),
+                        Image::make(),
                         Blocks::make()
                             ->addBlock('Heading 1', 'toggleHeading', ['level' => 3], 'heading')
                             ->addBlock('Heading 2', 'toggleHeading', ['level' => 4], 'heading')
@@ -52,7 +54,7 @@ class PostResource extends Resource
                         Oembed::make(),
                     ])
                     ->buttons([
-                        'blocks', 'bold', 'italic', 'underline', 'strike', '|', 'link', 'blockquote', 'oembed', 'orderedList','unorderedList',  '|', 'view_source'
+                        'blocks', 'bold', 'italic', 'underline', 'strike', '|', 'link', 'blockquote', 'image', 'oembed', 'orderedList','unorderedList',  '|', 'view_source'
                     ]),
 
 

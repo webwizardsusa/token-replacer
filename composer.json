@@ -17,6 +17,7 @@
         "awcodes/filament-curator": "^3.6",
         "awcodes/filament-tiptap-editor": "^3.0",
         "filament/filament": "^3.2",
+        "filapress/media": "*",
         "filapress/rich-editor": "*",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",

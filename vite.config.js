@@ -6,6 +6,7 @@ const prodScripts = [
     'resources/css/app.css',
     'resources/js/app.js',
     'resources/js/Editor/OEmbed/oembed.js',
+    'resources/js/Editor/Image/image.js',
     'resources/css/filament/admin/theme.css'
 ]
 

@@ -121,7 +121,7 @@ return [];
     public function externalAssets(): array
     {
         return [
-            ViteScript::make('resources/js/Editor/OEmbed/oembed.js'),
+            ViteScript::make('resources/js/Editor/Image/image.js'),
         ];
 
     }
