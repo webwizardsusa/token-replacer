@@ -1,0 +1,45 @@
+{
+    "name": "webwizardsusa/token-replace",
+    "description": "Define tokens and replace the occurrences in strings.",
+    "keywords": [
+        "Webwizardsusa",
+        "laravel"
+    ],
+    "homepage": "https://github.com/webwizardsusa/token-replace",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jamie Holly",
+            "email": "jamie@webwizardsusa.net",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "phpunit/phpunit": "^10.0"
+    },
+    "require-dev": {
+
+    },
+    "autoload": {
+        "psr-4": {
+            "Webwizardsusa\\TokenReplace\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Webwizardsusa\\TokenReplace\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "phpstan": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
