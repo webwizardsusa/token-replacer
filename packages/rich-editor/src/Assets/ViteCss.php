@@ -8,7 +8,7 @@ class ViteCss extends AbstractAsset
     {
         return [
             'type' => 'css',
-            'src' => $this->getSrc()
+            'src' => $this->getSrc(),
         ];
     }
 }

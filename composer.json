@@ -3,7 +3,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "repositories": [
         {
@@ -14,7 +17,6 @@
     "require": {
         "php": "^8.2",
         "ext-dom": "*",
-        "awcodes/filament-curator": "^3.6",
         "awcodes/filament-tiptap-editor": "^3.0",
         "filament/filament": "^3.2",
         "filapress/media": "*",

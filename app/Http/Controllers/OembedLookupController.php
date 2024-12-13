@@ -7,8 +7,8 @@ use Webwizardsusa\OEmbed\OEmbed;
 
 class OembedLookupController
 {
-
-    public function __invoke(Request $request) {
+    public function __invoke(Request $request)
+    {
         $urls = $request->get('urls', []);
         $service = app(OEmbed::class);
 

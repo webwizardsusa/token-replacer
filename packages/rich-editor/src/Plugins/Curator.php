@@ -2,7 +2,4 @@
 
 namespace Filapress\RichEditor\Plugins;
 
-class Curator
-{
-
-}
+class Curator {}

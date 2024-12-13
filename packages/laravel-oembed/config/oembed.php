@@ -1,4 +1,5 @@
 <?php
+
 return [
     /*
      * An array of the provider classes to enable

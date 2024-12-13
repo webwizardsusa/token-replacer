@@ -11,29 +11,28 @@ use Webwizardsusa\OEmbed\OEmbedUrl;
 class TwitterProvider extends AbstractOembedProvider
 {
     protected bool $renderHtml = true;
+
     public function extract(OEmbedUrl $url): OEmbedResponse|false
     {
-        if (!$url->domainOf('x.com') && !$url->domainOf('twitter.com')) {
+        if (! $url->domainOf('x.com') && ! $url->domainOf('twitter.com')) {
             return false;
         }
 
         // Twitter is buggy on OEmbed, so we grab it like this.
-        $response = Http::get('https://publish.twitter.com/oembed?url=' . urlencode($url->url()));
+        $response = Http::get('https://publish.twitter.com/oembed?url='.urlencode($url->url()));
 
         $json = $response->json();
         if ($json) {
             return $this->makeResponse($url, $json);
         }
         if ($response->status() === 404) {
-            throw new OembedNotFoundException();
+            throw new OembedNotFoundException;
         }
         throw new InvalidOembedResponse($response->status(), $response->getStatusCode());
-
     }
 
     public function name(): string
     {
         return 'twitter';
     }
-
 }

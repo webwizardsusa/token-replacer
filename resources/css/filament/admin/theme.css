@@ -1,7 +1,7 @@
 @import '/vendor/filament/filament/resources/css/theme.css';
 @import '/node_modules/cropperjs/dist/cropper.css';
-@import '/vendor/awcodes/filament-curator/resources/css/plugin.css';
 @import '/packages/rich-editor/resources/css/editor.css';
+@import '/packages/media/resources/css/plugin.css';
+@import '/packages/media/resources/css/media.css';
 @import './oembed.css';
 @config 'tailwind.config.js';
-

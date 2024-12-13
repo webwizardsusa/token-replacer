@@ -1,3 +1,5 @@
+@import '/packages/media/resources/css/media.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -18,7 +20,7 @@
 }
 
 
-.main-section a[href] {
+.post-content a[href] {
     @apply underline text-gray-900 hover:text-primary-500 dark:text-gray-100 dark:hover:text-primary-400
 }
 
@@ -53,4 +55,8 @@
     }
 }
 
-
+.card-image {
+    img {
+        @apply aspect-video object-cover;
+    }
+}

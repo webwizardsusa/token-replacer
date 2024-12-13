@@ -5,12 +5,17 @@ namespace Webwizardsusa\HtmlRefiner;
 class ExtractedCustomElement
 {
     protected string $tag;
+
     protected array $attributes;
+
     protected string $content;
+
     protected string $search;
+
     protected bool $selfClosing;
 
-    public function __construct(string $search, string $tag, array $attributes, string $content, bool $selfClosing = false) {
+    public function __construct(string $search, string $tag, array $attributes, string $content, bool $selfClosing = false)
+    {
 
         $this->tag = $tag;
         $this->attributes = $attributes;
@@ -23,6 +28,7 @@ class ExtractedCustomElement
     {
         return $this->search;
     }
+
     public function getTag(): string
     {
         return $this->tag;
@@ -31,6 +37,7 @@ class ExtractedCustomElement
     public function setTag(string $tag): static
     {
         $this->tag = $tag;
+
         return $this;
     }
 
@@ -42,6 +49,7 @@ class ExtractedCustomElement
     public function setAttributes(array $attributes): static
     {
         $this->attributes = $attributes;
+
         return $this;
     }
 
@@ -53,9 +61,9 @@ class ExtractedCustomElement
     public function setContent(string $content): static
     {
         $this->content = $content;
+
         return $this;
     }
-
 
     public function hasAttribute(string $attribute): bool
     {
@@ -72,16 +80,19 @@ class ExtractedCustomElement
         if ($this->hasAttribute($attribute)) {
             unset($this->attributes[$attribute]);
         }
+
         return $this;
     }
 
     public function setAttribute(string $attribute, $value): static
     {
         $this->attributes[$attribute] = $value;
+
         return $this;
     }
 
-    public function render(): string {
+    public function render(): string
+    {
         return new Element($this->tag, $this->attributes, $this->content, $this->selfClosing);
     }
 }

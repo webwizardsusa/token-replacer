@@ -283,18 +283,13 @@ let FPRichEditor = function({
                 toolbar.appendChild(button.render());
                 this.editorInstance().registerRenderedButton('help', button)
             }
-
-
-
-
         },
         createEditor() {
             let el = this.$el.querySelector('.fp-rich-editor-content');
             let _this = this;
             let editorInstance = this.editorInstance(this);
-            if (!el) {
 
-            }
+            console.log(this.state)
             let editor = new TipTap.Editor({
                 element: el,
                 extensions: _this.getPlugins(),

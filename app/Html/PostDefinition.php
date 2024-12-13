@@ -2,17 +2,17 @@
 
 namespace App\Html;
 
+use Filapress\Media\Elements\MediaElement;
 use Webwizardsusa\HtmlRefiner\Filters\AutoParagraph;
 use Webwizardsusa\HtmlRefiner\Filters\HtmlFilter;
 use Webwizardsusa\HtmlRefiner\RefinerDefinition;
 
 class PostDefinition extends RefinerDefinition
 {
-
-
     public function setup(): void
     {
         $this->customElement(OEmbedElement::make());
+        $this->customElement(MediaElement::make());
     }
 
     public function filters(): array
@@ -32,7 +32,7 @@ class PostDefinition extends RefinerDefinition
                 ->allowElement('h3')
                 ->allowElement('h4')
                 ->allowElement('h5')
-                ->allowElement('blockquote')
+                ->allowElement('blockquote'),
         ];
     }
 }

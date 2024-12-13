@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Filapress POC - {{ $title }}</title>
+    <title>{{ config('app.name') }} - {{ $title }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -22,15 +22,14 @@
     <div class="border-b">
 
         <header
-            class="mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0 flex items-center w-full bg-white dark:bg-gray-950 justify-between py-10">
+            class="p-4 sm:px-6  flex items-center w-full bg-white dark:bg-gray-950 justify-between">
             <div class="flex-1">
-
                 <a class="break-words"
                    aria-label="TailwindBlog"
                    href="/">
                     <div class="flex items-center justify-between">
                         <div class="mr-3 lg:text-4xl font-extrabold md:text-3xl">
-                            Filapress POC
+                            {{ config('app.name') }}
                         </div>
                     </div>
                 </a>
@@ -60,12 +59,18 @@
 
                 </div>
 
-                <a class="block font-medium text-gray-900 hover:text-primary-500 dark:text-gray-100 dark:hover:text-primary-400"
-                   href="/admin">Admin</a>
+                @if(auth()->user())
+                    <a class="block font-medium text-gray-900 hover:text-primary-500 dark:text-gray-100 dark:hover:text-primary-400"
+                       href="/admin">Admin</a>
+                    @else
+                    <a class="block font-medium text-gray-900 hover:text-primary-500 dark:text-gray-100 dark:hover:text-primary-400"
+                       href="/admin">Login</a>
+                    @endif
+
             </div>
         </header>
     </div>
-    <main class="mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0">
+    <main class="mx-auto w-full max-w-7xl p-4">
         @if($heading!==false)
             <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:leading-10 md:leading-14">
                 {{ $heading ?? $title }}</h1>

@@ -6,14 +6,11 @@ use Webwizardsusa\HtmlRefiner\RefinerDefinition;
 
 abstract class AbstractFilter
 {
-
-    public function __construct() {
-
-    }
+    public function __construct() {}
 
     public static function make(): static
     {
-        return new static();
+        return new static;
     }
 
     public function preProcess(string $html, RefinerDefinition $definition): string

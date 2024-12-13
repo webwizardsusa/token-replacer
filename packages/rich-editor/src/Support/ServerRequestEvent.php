@@ -6,21 +6,23 @@ use Illuminate\Support\Arr;
 
 class ServerRequestEvent
 {
-
     protected bool $stop = false;
+
     protected string $method;
+
     protected array $args;
 
-    public function __construct(string $method, array $args) {
+    public function __construct(string $method, array $args)
+    {
 
         $this->method = $method;
         $this->args = $args;
     }
 
-
     public function stop(): static
     {
         $this->stop = true;
+
         return $this;
     }
 

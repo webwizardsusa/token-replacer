@@ -8,13 +8,13 @@ use Filapress\RichEditor\Contracts\PluginAsExternalAssets;
 use Filapress\RichEditor\Contracts\PluginHasDialog;
 use Filapress\RichEditor\Plugins\AbstractPlugin;
 
-class Image extends AbstractPlugin implements PluginHasDialog, PluginAsExternalAssets
+class Image extends AbstractPlugin implements PluginAsExternalAssets, PluginHasDialog
 {
-
     public static function make(): static
     {
-        return new static();
+        return new static;
     }
+
     public function name(): string
     {
         return 'image';

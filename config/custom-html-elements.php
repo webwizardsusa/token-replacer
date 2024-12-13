@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'elements' => []
+    'elements' => [],
 ];

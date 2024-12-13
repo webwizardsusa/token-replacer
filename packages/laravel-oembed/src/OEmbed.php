@@ -2,14 +2,11 @@
 
 namespace Webwizardsusa\OEmbed;
 
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
-use Webwizardsusa\OEmbed\Exceptions\OEmbedException;
 use Webwizardsusa\OEmbed\Providers\AbstractOembedProvider;
 
 class OEmbed
 {
-
     /** @var AbstractOembedProvider[] | Collection */
     protected Collection|array $providers;
 
@@ -26,7 +23,7 @@ class OEmbed
                 return $this->register(...$provider);
             }
 
-            $instance = new $provider();
+            $instance = new $provider;
             $this->providers->put($instance->name(), $instance);
         }
 
@@ -50,7 +47,6 @@ class OEmbed
     {
         return $this->providers;
     }
-
 
     public function fromUrl(string|OEmbedUrl $url, bool $useCache = true, bool $throw = false): ?OEmbedResponse
     {

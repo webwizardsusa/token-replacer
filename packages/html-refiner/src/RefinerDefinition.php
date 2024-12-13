@@ -6,7 +6,6 @@ use Webwizardsusa\HtmlRefiner\Filters\AbstractFilter;
 
 abstract class RefinerDefinition
 {
-
     protected string $input;
 
     protected ?string $context = null;
@@ -19,9 +18,7 @@ abstract class RefinerDefinition
         $this->setup();
     }
 
-    public function setup() {
-
-    }
+    public function setup() {}
 
     public static function for(string $html): static
     {
@@ -31,6 +28,7 @@ abstract class RefinerDefinition
     public function context(?string $context): static
     {
         $this->context = $context;
+
         return $this;
     }
 
@@ -47,6 +45,7 @@ abstract class RefinerDefinition
     public function customElement(CustomElement $element): static
     {
         $this->customElements[$element->tag()] = $element;
+
         return $this;
     }
 
@@ -58,7 +57,6 @@ abstract class RefinerDefinition
         return $this->customElements;
     }
 
-
     /**
      * @return array | AbstractFilter[]
      */
@@ -67,22 +65,23 @@ abstract class RefinerDefinition
     public function parse(): string
     {
         $html = $this->input;
-        foreach($this->getCustomElements() as $element) {
+
+        foreach ($this->getCustomElements() as $element) {
             $html = $element->preFilter($html, $this);
         }
 
-        foreach($this->filters() as $filter) {
+
+        foreach ($this->filters() as $filter) {
             $html = $filter->preProcess($html, $this);
         }
-
-        foreach($this->filters() as $filter) {
+        foreach ($this->filters() as $filter) {
             $html = $filter->process($html, $this);
         }
 
-        foreach($this->filters() as $filter) {
+        foreach ($this->filters() as $filter) {
             $html = $filter->postProcess($html, $this);
         }
-        foreach($this->getCustomElements() as $element) {
+        foreach ($this->getCustomElements() as $element) {
             $html = $element->render($html, $this);
         }
 

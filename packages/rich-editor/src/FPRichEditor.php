@@ -2,25 +2,28 @@
 
 namespace Filapress\RichEditor;
 
-use Filament\Support\Assets\Js;
-use Filament\Support\Facades\FilamentAsset;
-use Filapress\RichEditor\Assets\ViteCss;
-use Filapress\RichEditor\Assets\ViteScript;
-use Filapress\RichEditor\Contracts\PluginHasDialog;
-use Filapress\RichEditor\Contracts\PluginAsExternalAssets;
-use Filapress\RichEditor\Plugins\AbstractPlugin;
-use Filapress\RichEditor\Support\ServerRequestEvent;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Field;
+use Filament\Support\Assets\Js;
+use Filament\Support\Facades\FilamentAsset;
+use Filapress\RichEditor\Contracts\PluginAsExternalAssets;
+use Filapress\RichEditor\Contracts\PluginHasDialog;
+use Filapress\RichEditor\Plugins\AbstractPlugin;
+use Filapress\RichEditor\Support\ServerRequestEvent;
 use Illuminate\Support\Facades\Vite;
 
 class FPRichEditor extends Field
 {
     protected string $view = 'filapress-rich-editor::editor';
+
     protected array $plugins = [];
+
     protected array $buttons = [];
+
     protected string $placeholder = '';
+
     protected string $maxHeight = '';
+
     protected string $minHeight = '';
 
     protected bool $stickyToolbar = true;
@@ -34,37 +37,37 @@ class FPRichEditor extends Field
     protected function setUp(): void
     {
         $this->registerListeners([
-                'fp-rich-editor::showModal' => [
-                    fn(
-                        FPRichEditor $component,
-                        string       $statePath,
-                        array        $arguments
-                    ) => $this->openDialog($component, $statePath, $arguments),
-                ],
-                'fp-rich-editor::serverRequest' => [
-                    function (
-                        FPRichEditor $component,
-                        string       $statePath,
-                        array        $arguments
-                    ) {
-                        if ($statePath === $this->getStatePath()) {
-                            $this->handleServerRequest($arguments);
-
-                        }
+            'fp-rich-editor::showModal' => [
+                fn (
+                    FPRichEditor $component,
+                    string $statePath,
+                    array $arguments
+                ) => $this->openDialog($component, $statePath, $arguments),
+            ],
+            'fp-rich-editor::serverRequest' => [
+                function (
+                    FPRichEditor $component,
+                    string $statePath,
+                    array $arguments
+                ) {
+                    if ($statePath === $this->getStatePath()) {
+                        $this->handleServerRequest($arguments);
 
                     }
-                ],
-                'fp-rich-editor::showHelp' => [
-                    function (
-                        FPRichEditor $component,
-                        string       $statePath,
-                        array        $arguments
-                    ) {
-                        $this->getCustomListener('help', $component, $statePath, []);
 
-                    }
-                ]
-            ]
+                },
+            ],
+            'fp-rich-editor::showHelp' => [
+                function (
+                    FPRichEditor $component,
+                    string $statePath,
+                    array $arguments
+                ) {
+                    $this->getCustomListener('help', $component, $statePath, []);
+
+                },
+            ],
+        ]
         );
         $this->registerActions([
             Action::make('help')
@@ -77,20 +80,16 @@ class FPRichEditor extends Field
                 ->modalContent(function () {
                     return view($this->helpView, [
                         'items' => collect($this->plugins)
-                            ->filter(fn($plugin) => $plugin instanceof AbstractPlugin)
-                            ->map(fn(AbstractPlugin $plugin) => $plugin->getHelp())
+                            ->filter(fn ($plugin) => $plugin instanceof AbstractPlugin)
+                            ->map(fn (AbstractPlugin $plugin) => $plugin->getHelp())
                             ->filter(),
                     ]);
-                })
+                }),
         ]);
 
     }
 
-
-    public function showHelpModal(): void
-    {
-
-    }
+    public function showHelpModal(): void {}
 
     public function handleServerRequest(array $arguments): void
     {
@@ -99,7 +98,7 @@ class FPRichEditor extends Field
         foreach ($this->plugins as $plugin) {
             if ($plugin instanceof AbstractPlugin) {
                 foreach ($plugin->getServerRequestListener($event->getMethod()) as $callback) {
-                    if (!$event->shouldStop() && $results = $callback($event)) {
+                    if (! $event->shouldStop() && $results = $callback($event)) {
                         $response = $results;
                     }
                 }
@@ -148,6 +147,7 @@ class FPRichEditor extends Field
         });
 
         $this->plugins = $plugins;
+
         return $this;
     }
 
@@ -158,14 +158,15 @@ class FPRichEditor extends Field
                 if ($plugin instanceof AbstractPlugin) {
                     return $plugin->toArray();
                 }
+
                 return $plugin;
             })->toArray();
     }
 
-
     public function buttons(array $buttons): static
     {
         $this->buttons = $buttons;
+
         return $this;
     }
 
@@ -177,6 +178,7 @@ class FPRichEditor extends Field
     public function placeholder(string $placeholder): static
     {
         $this->placeholder = $placeholder;
+
         return $this;
     }
 
@@ -193,6 +195,7 @@ class FPRichEditor extends Field
     public function maxHeight(string $maxHeight): static
     {
         $this->maxHeight = $maxHeight;
+
         return $this;
     }
 
@@ -204,6 +207,7 @@ class FPRichEditor extends Field
     public function minHeight(string $minHeight): static
     {
         $this->minHeight = $minHeight;
+
         return $this;
     }
 
@@ -215,9 +219,9 @@ class FPRichEditor extends Field
     public function stickyToolbar(bool $stickyToolbar): static
     {
         $this->stickyToolbar = $stickyToolbar;
+
         return $this;
     }
-
 
     public function sendActionToEditor(string $action, array $arguments, array $data = []): void
     {
@@ -245,17 +249,34 @@ class FPRichEditor extends Field
     {
         foreach ($this->plugins as $plugin) {
             if ($plugin instanceof AbstractPlugin) {
-                if (!empty($plugin->stateHydratedCallbacks())) {
-                }
-                $this->evaluate($plugin->stateHydratedCallbacks());
+                  $this->evaluate($plugin->stateHydratedCallback());
             }
         }
+
         return parent::callAfterStateHydrated();
     }
+
+    public function getStateToDehydrate(): array
+    {
+        if ($callback = $this->dehydrateStateUsing) {
+            $state =  $this->evaluate($callback);
+        } else {
+            $state = $this->getState();
+        }
+        foreach ($this->plugins as $plugin) {
+            if ($plugin instanceof AbstractPlugin) {
+                $state = $plugin->stateDehydrate($state);
+            }
+        }
+        return [$this->getStatePath() => $state];
+    }
+
+
 
     public function withHelp(bool $with): static
     {
         $this->withHelp = $with;
+
         return $this;
     }
 
@@ -277,7 +298,6 @@ class FPRichEditor extends Field
                 $externals = array_merge($externals, $plugin->externalAssets());
             }
         }
-
 
         return collect($externals)->toArray();
     }

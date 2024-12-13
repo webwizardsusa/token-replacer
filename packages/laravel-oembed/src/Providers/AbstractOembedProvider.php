@@ -11,7 +11,6 @@ use Webwizardsusa\OEmbed\OEmbedUrl;
 
 abstract class AbstractOembedProvider
 {
-
     protected array $regexes = [];
 
     protected string $oembedUrl = '';
@@ -19,11 +18,11 @@ abstract class AbstractOembedProvider
     protected bool $renderHtml = false;
 
     protected bool $responsiveFrame = true;
+
     abstract public function name(): string;
 
-
-
-    public function render(OEmbedResponse $response): mixed {
+    public function render(OEmbedResponse $response): mixed
+    {
         if ($this->renderHtml) {
             return $this->renderHtml($response);
         }
@@ -40,42 +39,44 @@ abstract class AbstractOembedProvider
     public function renderIframe(OEmbedResponse $response, bool $responsive = true): mixed
     {
         $view = $responsive && $response->getWidth() && $response->getHeight() ? 'laravel-oembed::responsive-iframe' : 'laravel-oembed::iframe';
+
         return view($view, ['response' => $response]);
     }
 
-
     protected function findFromRegex(OEmbedUrl|string $url): bool
     {
-        foreach($this->regexes as $regex) {
+        foreach ($this->regexes as $regex) {
             if (preg_match($regex, $url)) {
                 return true;
             }
         }
+
         return false;
     }
 
-    public function pull(OEmbedUrl $url, $apiUrl):OEmbedResponse {
+    public function pull(OEmbedUrl $url, $apiUrl): OEmbedResponse
+    {
 
         $response = $this->retrieve($apiUrl, ['url' => $url->url()]);
         if ($response->json()) {
             return OEmbedResponse::make($url->url(), $this->name(), $response->json());
         }
 
-        throw new InvalidOembedResponse('Invalid ' . $this->name() . ' oembed response', $response->getStatusCode());
+        throw new InvalidOembedResponse('Invalid '.$this->name().' oembed response', $response->getStatusCode());
     }
+
     public function extract(OEmbedUrl $url): OEmbedResponse|false
     {
-        if (!$this->findFromRegex($url)) {
+        if (! $this->findFromRegex($url)) {
             return false;
         }
-        if (!$this->oembedUrl) {
+        if (! $this->oembedUrl) {
             throw new \RuntimeException('OEmbed provider must define a $oembedUrl property');
         }
+
         return $this->pull($url, $this->oembedUrl);
 
     }
-
-
 
     public function retrieve(string $url, array|null|string $query = null, array $headers = []): PromiseInterface|Response
     {
@@ -103,6 +104,7 @@ abstract class AbstractOembedProvider
     public function setRegexes(array $regexes): AbstractOembedProvider
     {
         $this->regexes = $regexes;
+
         return $this;
     }
 
@@ -114,8 +116,7 @@ abstract class AbstractOembedProvider
     public function setOembedUrl(string $oembedUrl): AbstractOembedProvider
     {
         $this->oembedUrl = $oembedUrl;
+
         return $this;
     }
-
-
 }

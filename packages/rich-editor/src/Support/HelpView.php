@@ -6,7 +6,6 @@ use Illuminate\Support\HtmlString;
 
 class HelpView
 {
-
     protected string $heading;
 
     protected ?string $html = null;
@@ -15,7 +14,8 @@ class HelpView
 
     protected ?array $view = null;
 
-    public function __construct(string $heading) {
+    public function __construct(string $heading)
+    {
 
         $this->heading = $heading;
     }
@@ -28,16 +28,18 @@ class HelpView
     public function text(?string $text): static
     {
         $this->text = $text;
+
         return $this;
     }
 
     public function html(?string $html): static
     {
         $this->html = $html;
+
         return $this;
     }
 
-    public function view (string $viewName, array $viewData = []): static
+    public function view(string $viewName, array $viewData = []): static
     {
         $this->view = [
             'view' => $viewName,
@@ -47,8 +49,8 @@ class HelpView
         return $this;
     }
 
-
-    public function render() {
+    public function render()
+    {
         if ($this->view) {
 
         }

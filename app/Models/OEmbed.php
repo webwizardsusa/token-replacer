@@ -20,19 +20,18 @@ class OEmbed extends Model
     protected function casts(): array
     {
         return [
-            'data' => 'array'
+            'data' => 'array',
         ];
     }
-
 
     public static function fromUrl(string $url): ?static
     {
         $hash = static::hashUrl($url);
         $instance = static::query()->where('url_hash', $hash)
             ->first();
-        if (!$instance) {
+        if (! $instance) {
             $oembed = app(\Webwizardsusa\OEmbed\OEmbed::class)->fromUrl($url);
-            if (!$oembed) {
+            if (! $oembed) {
                 return null;
             }
 
@@ -41,9 +40,10 @@ class OEmbed extends Model
                 'url_hash' => $hash,
                 'title' => $oembed->getTitle(),
                 'provider' => $oembed->getProvider(),
-                'data' => $oembed->toArray()
+                'data' => $oembed->toArray(),
             ]);
         }
+
         return $instance;
     }
 
@@ -58,6 +58,7 @@ class OEmbed extends Model
         if (is_array($this->data)) {
             return OEmbedResponse::hydrate($this->data);
         }
+
         return null;
     }
 }

@@ -6,21 +6,25 @@ use Illuminate\Support\Arr;
 
 class OEmbedUrl
 {
-
     protected string $url;
+
     protected array $query;
+
     /**
      * @var mixed|string
      */
     protected mixed $host;
+
     /**
      * @var mixed|string
      */
     protected mixed $path;
+
     /**
      * @var mixed|string
      */
     protected mixed $fragment;
+
     /**
      * @var mixed|string
      */
@@ -32,24 +36,25 @@ class OEmbedUrl
         $this->extract();
     }
 
-    protected function extract(): void {
+    protected function extract(): void
+    {
         $urlInfo = array_merge(['scheme' => '', 'host' => '', 'path' => '', 'query' => '', 'fragment' => ''], parse_url($this->url));
         $this->scheme = $urlInfo['scheme'];
         $this->host = $urlInfo['host'];
         $this->path = $urlInfo['path'];
         $this->fragment = $urlInfo['fragment'];
-        if (!empty($urlInfo['query'])) {
+        if (! empty($urlInfo['query'])) {
             $query = [];
             parse_str($urlInfo['query'], $query);
             $this->query = $query;
         }
 
     }
+
     public static function make(string $url): static
     {
         return new static($url);
     }
-
 
     public function url(): string
     {
@@ -83,10 +88,11 @@ class OEmbedUrl
 
     public function domainOf(string $needle, bool $caseInsensitive = true): bool
     {
-        $pattern = '/^(.*?)' . preg_quote($needle, '/') . '$/';
+        $pattern = '/^(.*?)'.preg_quote($needle, '/').'$/';
         if ($caseInsensitive) {
-            $pattern.='i';
+            $pattern .= 'i';
         }
+
         return preg_match($pattern, $this->host) === 1;
     }
 
@@ -94,6 +100,7 @@ class OEmbedUrl
     {
         return strtolower($this->scheme) === 'https';
     }
+
     public function path(): mixed
     {
         return $this->path;
@@ -113,5 +120,4 @@ class OEmbedUrl
     {
         return $this->url;
     }
-
 }

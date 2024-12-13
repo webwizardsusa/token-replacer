@@ -19,7 +19,7 @@ function makeOembedNode(plugin) {
 
         group: 'block', // This makes the node behave like a block-level element
         draggable: true,
-        atom: true, // Atomic, cannot have child nodes
+        atom: false, // Atomic, cannot have child nodes
 
         addAttributes() {
             return {
@@ -39,11 +39,15 @@ function makeOembedNode(plugin) {
             return [
                 {
                     tag: 'oembed[src]',
-                    getAttrs: (dom) => ({
-                        src: dom.getAttribute('src'),
-                        title: dom.getAttribute('title'),
-                        provider: dom.getAttribute('provider'),
-                    }),
+                    getAttrs: (dom) => {
+                        console.log('Parsing node:', dom); // Add this to debug
+
+                        return {
+                            src: dom.getAttribute('src'),
+                            title: dom.getAttribute('title'),
+                            provider: dom.getAttribute('provider'),
+                        }
+                    },
                 },
             ];
         },
@@ -54,20 +58,23 @@ function makeOembedNode(plugin) {
         },
 
         addNodeView() {
-            return ({ node, editor }) => {
+            return ({ node }) => {
                 const dom = document.createElement('div');
                 dom.classList.add('oembed-preview');
+                dom.dataset.id = node.attrs.src; // Unique identifier for debugging
 
                 const title = document.createElement('h5');
-                title.textContent = (node.attrs.provider || 'Unknown provider')  + ' embed';
+                title.textContent = (node.attrs.provider || 'Unknown provider') + ' embed';
                 dom.appendChild(title);
 
                 const provider = document.createElement('span');
                 provider.textContent = node.attrs.title ? node.attrs.title : node.attrs.src;
                 dom.appendChild(provider);
-                dom.addEventListener('dblclick', (event) => {
-                    plugin.component.openModal('oembed-dialog', {src: node.attrs.src});
+
+                dom.addEventListener('dblclick', () => {
+                    plugin.component.openModal('oembed-dialog', { src: node.attrs.src });
                 });
+
                 return {
                     dom,
                     contentDOM: null, // No editable content inside

@@ -26,8 +26,10 @@ class Blocks extends AbstractPlugin
             'attrs' => $attrs,
             'active' => $active,
         ];
+
         return $this;
     }
+
     public function getConfig(): array
     {
         return ['blocks' => array_values($this->blocks)];

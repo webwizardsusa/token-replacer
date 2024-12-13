@@ -11,7 +11,7 @@ class OEmbedElement extends CustomElement
 {
     protected array $attributes = ['src'];
 
-    protected bool $selfClosing = true;
+    protected bool $selfClosing = false;
 
     public function tag(): string
     {
@@ -21,6 +21,7 @@ class OEmbedElement extends CustomElement
     public function render(string $html, RefinerDefinition $definition): string
     {
         $elements = $this->extract($html);
+
         foreach ($elements as $element) {
             $replace = '';
             if ($element->hasAttribute('src')) {
@@ -36,13 +37,14 @@ class OEmbedElement extends CustomElement
                         $replace = $oembed->response->render();
                     }
 
-                } elseif($definition->getContext() === 'editor') {
-                    $replace = new Element('oembed',[
+                } elseif ($definition->getContext() === 'editor') {
+
+                    $replace = new Element('oembed', [
                         'src' => $element->getAttribute('src'),
                         'title' => 'OEmbed',
                         'provider' => 'OEmbed',
                         'invalid' => true,
-                    ], '', true );
+                    ], '', true);
                 }
             }
             $html = str_replace($element->raw(), $replace, $html);

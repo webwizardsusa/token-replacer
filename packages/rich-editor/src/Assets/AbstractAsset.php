@@ -17,6 +17,7 @@ abstract class AbstractAsset implements Arrayable
     {
         return new static($src);
     }
+
     public function getSrc(): string
     {
         return $this->src;

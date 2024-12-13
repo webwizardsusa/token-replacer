@@ -4,15 +4,15 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::create('filapress_media_usage', function (Blueprint $table) {
-            $table->id();
-
-
-
-            $table->timestamps();
+            $table->uuid('media_id');
+            $table->string('usage_type');
+            $table->string('usage_id', 36);
+            $table->primary(['media_id', 'usage_type', 'usage_id']);
         });
     }
 

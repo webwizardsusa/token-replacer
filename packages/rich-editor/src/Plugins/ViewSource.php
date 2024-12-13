@@ -2,18 +2,17 @@
 
 namespace Filapress\RichEditor\Plugins;
 
-use Filapress\RichEditor\Contracts\PluginHasDialog;
-use Filapress\RichEditor\FPRichEditor;
 use DOMDocument;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Textarea;
+use Filapress\RichEditor\Contracts\PluginHasDialog;
+use Filapress\RichEditor\FPRichEditor;
 
 class ViewSource extends AbstractPlugin implements PluginHasDialog
 {
-
     public static function make(): static
     {
-        return new static();
+        return new static;
     }
 
     public function name(): string
@@ -25,9 +24,9 @@ class ViewSource extends AbstractPlugin implements PluginHasDialog
     {
         return Action::make('view-source')
             ->fillForm(function ($arguments) {
-                $source = \Arr::get($arguments, "source", "");
+                $source = \Arr::get($arguments, 'source', '');
                 if ($source) {
-                    $dom = new DOMDocument();
+                    $dom = new DOMDocument;
                     $dom->preserveWhiteSpace = false; // Prevents extra spaces
                     $dom->formatOutput = true;       // Enables formatting
                     @$dom->loadHTML($source);          // Suppress warnings for invalid HTML
@@ -38,6 +37,7 @@ class ViewSource extends AbstractPlugin implements PluginHasDialog
                     }
 
                 }
+
                 return ['source' => $source];
             })
             ->modalWidth('screen')
@@ -50,8 +50,10 @@ class ViewSource extends AbstractPlugin implements PluginHasDialog
             ])
             ->action(function (FPRichEditor $component, $data) {
                 $content = $data['source'] ?? '<p></p>';
+                $component->state($content);
+                $component->callAfterStateHydrated();
 
-                $component->sendActionToEditor('setContent',[], ['content' => $content]);
+                $component->sendActionToEditor('setContent', [], ['content' => $component->getState()]);
             });
     }
 }

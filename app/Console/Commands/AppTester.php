@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Post;
+use Filapress\Media\Models\FilapressMedia;
 use Illuminate\Console\Command;
 
 class AppTester extends Command
@@ -25,6 +27,10 @@ class AppTester extends Command
      */
     public function handle()
     {
-        //
+        $post = Post::find(2);
+        $post->delete();
+        dd("DONE");
+        $post->syncMediaUsage();
+        dd("OK");
     }
 }

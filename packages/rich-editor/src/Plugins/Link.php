@@ -2,20 +2,19 @@
 
 namespace Filapress\RichEditor\Plugins;
 
-use Filapress\RichEditor\Contracts\PluginHasDialog;
-use Filapress\RichEditor\Support\HelpView;
-use Filapress\RichEditor\FPRichEditor;
 use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filapress\RichEditor\Contracts\PluginHasDialog;
+use Filapress\RichEditor\FPRichEditor;
+use Filapress\RichEditor\Support\HelpView;
 
 class Link extends AbstractPlugin implements PluginHasDialog
 {
-
     public static function make(): static
     {
-        return new static();
+        return new static;
     }
 
     public function dialog(): Action
@@ -49,14 +48,14 @@ class Link extends AbstractPlugin implements PluginHasDialog
             ])->action(function (FPRichEditor $component, $data, $arguments) {
                 $remove = \Arr::get($arguments, 'remove', false);
                 $data['inclusive'] = false;
-                $component->sendActionToEditor(!$remove ? 'setLink' : 'unsetLink',$arguments, $data);
+                $component->sendActionToEditor(! $remove ? 'setLink' : 'unsetLink', $arguments, $data);
             })->extraModalFooterActions(function (Action $action): array {
 
                 if (\Arr::get($action->getArguments(), 'href', '') !== '') {
                     return [
                         $action->makeModalSubmitAction('remove_link', ['remove' => true])
                             ->color('danger')
-                            ->extraAttributes(function () use ($action) {
+                            ->extraAttributes(function () {
                                 return [
                                     'style' => 'margin-inline-start: auto;',
                                 ];
@@ -68,12 +67,12 @@ class Link extends AbstractPlugin implements PluginHasDialog
             });
     }
 
-
     public function name(): string
     {
 
         return 'link';
     }
+
     public function getHelp(): mixed
     {
         return HelpView::make('Link')

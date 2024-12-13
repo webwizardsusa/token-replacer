@@ -2,17 +2,14 @@
 
 namespace Webwizardsusa\OEmbed\Providers;
 
-use Webwizardsusa\OEmbed\Exceptions\InvalidOembedResponse;
-use Webwizardsusa\OEmbed\OEmbedResponse;
-use Webwizardsusa\OEmbed\OEmbedUrl;
-
 class BlueskyProvider extends AbstractOembedProvider
 {
-
     protected bool $renderHtml = true;
+
     protected array $regexes = [
-        '#https?://bsky.app/profile/.*/post/.*#i'
+        '#https?://bsky.app/profile/.*/post/.*#i',
     ];
+
     protected string $oembedUrl = 'https://embed.bsky.app/oembed';
 
     public function name(): string

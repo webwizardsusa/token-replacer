@@ -7,34 +7,33 @@ use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Set;
 use Filament\Support\Enums\MaxWidth;
-use Filapress\RichEditor\Assets\ViteCss;
 use Filapress\RichEditor\Assets\ViteScript;
-use Filapress\RichEditor\Contracts\PluginHasDialog;
 use Filapress\RichEditor\Contracts\PluginAsExternalAssets;
+use Filapress\RichEditor\Contracts\PluginHasDialog;
 use Filapress\RichEditor\FPRichEditor;
 use Filapress\RichEditor\Plugins\AbstractPlugin;
 use Filapress\RichEditor\Support\HelpView;
 use Filapress\RichEditor\Support\ServerRequestEvent;
 
-class Oembed extends AbstractPlugin implements PluginHasDialog, PluginAsExternalAssets
+class Oembed extends AbstractPlugin implements PluginAsExternalAssets, PluginHasDialog
 {
-
     public function setup(FPRichEditor $editor): void
     {
-       $this->onServerRequest('parseOembedLinks', function(ServerRequestEvent $event) {
-           $urls = $event->arg('urls', []);
-           $results = [];
-           foreach($urls as $url) {
-               $oembed = $this->oembedService()->fromUrl($url);
-               $results[$url] = $oembed?->toArray();
-           }
-           return ['results' => $results ];
-       });
+        $this->onServerRequest('parseOembedLinks', function (ServerRequestEvent $event) {
+            $urls = $event->arg('urls', []);
+            $results = [];
+            foreach ($urls as $url) {
+                $oembed = $this->oembedService()->fromUrl($url);
+                $results[$url] = $oembed?->toArray();
+            }
+
+            return ['results' => $results];
+        });
     }
 
     public static function make(): static
     {
-        return new static();
+        return new static;
     }
 
     public function name(): string
@@ -42,10 +41,11 @@ class Oembed extends AbstractPlugin implements PluginHasDialog, PluginAsExternal
         return 'oembed';
     }
 
-    public function oembedService():\Webwizardsusa\OEmbed\OEmbed
+    public function oembedService(): \Webwizardsusa\OEmbed\OEmbed
     {
         return app(\Webwizardsusa\OEmbed\OEmbed::class);
     }
+
     public function dialog(): Action
     {
         return Action::make('oembed-dialog')
@@ -82,14 +82,15 @@ class Oembed extends AbstractPlugin implements PluginHasDialog, PluginAsExternal
                 return \Arr::get($arguments, 'src') ? 'Update OEmbed' : 'Insert Oembed';
             })->form(function ($arguments) {
                 $src = \Arr::get($arguments, 'src');
+
                 return [
                     TextInput::make('src')
                         ->label('URL')
                         ->columnSpan('full')
                         ->required()
                         ->live()
-                        ->afterStateUpdated(function($state, Set $set) {
-                            if (!$state) {
+                        ->afterStateUpdated(function ($state, Set $set) {
+                            if (! $state) {
                                 return;
                             }
                             $oembed = app(\Webwizardsusa\OEmbed\OEmbed::class)
@@ -102,8 +103,10 @@ class Oembed extends AbstractPlugin implements PluginHasDialog, PluginAsExternal
                             $set('preview', $data);
                         })
                         ->validationAttribute('URL'),
-                        OembedPreview::make('preview')
-                    ->hidden(function ($state) { return !$state;})
+                    OembedPreview::make('preview')
+                        ->hidden(function ($state) {
+                            return ! $state;
+                        }),
 
                 ];
             })
@@ -112,30 +115,29 @@ class Oembed extends AbstractPlugin implements PluginHasDialog, PluginAsExternal
                 $component->sendActionToEditor('insertOembed', $arguments, $data);
             })
             ->extraModalFooterActions(function (Action $action): array {
-return [];
+                return [];
 
             });
     }
 
-
     public function externalAssets(): array
     {
         return [
-            ViteScript::make('resources/js/Editor/Image/image.js'),
+            ViteScript::make('resources/js/Editor/OEmbed/oembed.js'),
         ];
 
     }
 
-
     public function getHelp(): mixed
     {
         $items = [];
-        foreach($this->oembedService()->all() as $provider) {
+        foreach ($this->oembedService()->all() as $provider) {
             $items[] = \Str::title($provider->name());
         }
+
         return HelpView::make('OEmbed')
 
-            ->html('Embed an item from another site via it\'s URL only. You can either paste a line in on a new line in the editor, or click the OEmbed button. <br /> <br />We support the following sites for embedding: ' . implode(', ', $items));
+            ->html('Embed an item from another site via it\'s URL only. You can either paste a line in on a new line in the editor, or click the OEmbed button. <br /> <br />We support the following sites for embedding: '.implode(', ', $items));
 
     }
 }

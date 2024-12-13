@@ -4,12 +4,14 @@ namespace App\Html;
 
 class ExtractedElement
 {
-
     protected string $tag;
+
     protected array $attributes;
+
     protected string $content;
 
-    public function __construct(string $tag, array $attributes, string $content) {
+    public function __construct(string $tag, array $attributes, string $content)
+    {
 
         $this->tag = $tag;
         $this->attributes = $attributes;
@@ -24,6 +26,7 @@ class ExtractedElement
     public function setTag(string $tag): ExtractedElement
     {
         $this->tag = $tag;
+
         return $this;
     }
 
@@ -35,6 +38,7 @@ class ExtractedElement
     public function setAttributes(array $attributes): ExtractedElement
     {
         $this->attributes = $attributes;
+
         return $this;
     }
 
@@ -46,9 +50,9 @@ class ExtractedElement
     public function setContent(string $content): ExtractedElement
     {
         $this->content = $content;
+
         return $this;
     }
-
 
     public function hasAttribute(string $attribute): bool
     {
@@ -65,33 +69,38 @@ class ExtractedElement
         if ($this->hasAttribute($attribute)) {
             unset($this->attributes[$attribute]);
         }
+
         return $this;
     }
 
     public function setAttribute(string $attribute, $value): static
     {
         $this->attributes[$attribute] = $value;
+
         return $this;
     }
 
-    public function render(): string {
+    public function render(): string
+    {
         $attributes = [];
-        foreach($this->attributes as $key=>$value) {
-            $attributes[] = $key . '="' . $value . '"';
+        foreach ($this->attributes as $key => $value) {
+            $attributes[] = $key.'="'.$value.'"';
         }
-        $output =  '<' . $this->tag;
+        $output = '<'.$this->tag;
         if (count($attributes)) {
-            $output .= ' ' . implode(' ', $attributes);
+            $output .= ' '.implode(' ', $attributes);
         }
         if ($this->content) {
-            $output.= '>' . $this->content . '</' . $this->tag . '>';
+            $output .= '>'.$this->content.'</'.$this->tag.'>';
         } else {
-            $output.= ' />';
+            $output .= ' />';
         }
+
         return $output;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->render();
     }
 }

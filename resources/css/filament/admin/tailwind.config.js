@@ -7,5 +7,6 @@ export default {
         './resources/views/filament/**/*.blade.php',
         './vendor/filament/**/*.blade.php',
         './resources/js/ExternalPlugins/**/*.css',
+        './packages/media/resources/views/**/*.blade.php',
     ],
 }

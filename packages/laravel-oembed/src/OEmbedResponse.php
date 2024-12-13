@@ -4,25 +4,25 @@ namespace Webwizardsusa\OEmbed;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Arr;
-use Illuminate\View\View;
 use Webwizardsusa\OEmbed\Exceptions\ProviderNotFoundException;
 
 class OEmbedResponse implements Arrayable
 {
     protected array $data;
+
     protected string $provider;
+
     protected string $url;
 
     protected string $title;
+
     protected string $embedCode;
 
     protected int $width = 0;
+
     protected int $height = 0;
+
     protected Carbon $retrievedAt;
 
     public function __construct(string $url, string $provider, array $data)
@@ -31,10 +31,10 @@ class OEmbedResponse implements Arrayable
         $this->url = $url;
         $this->provider = $provider;
         $this->data = $data;
-        $this->embedCode = (string)Arr::get($data, 'html', '');
-        $this->width = (int)Arr::get($data, 'width', 0);
-        $this->height = (int)Arr::get($data, 'height', 0);
-        $this->title = (string)Arr::get($data, 'title', '');
+        $this->embedCode = (string) Arr::get($data, 'html', '');
+        $this->width = (int) Arr::get($data, 'width', 0);
+        $this->height = (int) Arr::get($data, 'height', 0);
+        $this->title = (string) Arr::get($data, 'title', '');
     }
 
     public static function make(string $url, string $provider, array $data): static
@@ -42,7 +42,7 @@ class OEmbedResponse implements Arrayable
         return app(static::class, [
             'url' => $url,
             'provider' => $provider,
-            'data' => $data
+            'data' => $data,
         ]);
     }
 
@@ -53,6 +53,7 @@ class OEmbedResponse implements Arrayable
             ->height($data['height']);
         $instance->retrievedAt = Carbon::parse($data['retrieved_at']);
         $instance->title = $data['title'] ?? '';
+
         return $instance;
     }
 
@@ -64,6 +65,7 @@ class OEmbedResponse implements Arrayable
     public function width(int $width): static
     {
         $this->width = $width;
+
         return $this;
     }
 
@@ -75,6 +77,7 @@ class OEmbedResponse implements Arrayable
     public function height(int $height): static
     {
         $this->height = $height;
+
         return $this;
     }
 
@@ -86,9 +89,9 @@ class OEmbedResponse implements Arrayable
     public function setEmbedCode(string $embedCode): static
     {
         $this->embedCode = $embedCode;
+
         return $this;
     }
-
 
     public function get(string $key): mixed
     {
@@ -103,6 +106,7 @@ class OEmbedResponse implements Arrayable
     public function title(string $title): static
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -111,14 +115,13 @@ class OEmbedResponse implements Arrayable
         return $this->title;
     }
 
-
-
     public function aspectRatio(): float
     {
         if ($this->width === 0 || $this->height === 0) {
             return 100;
         }
-        return  ($this->height / $this->width) * 100;
+
+        return ($this->height / $this->width) * 100;
     }
 
     public function getProvider(): string
@@ -140,6 +143,7 @@ class OEmbedResponse implements Arrayable
     {
         return $this->retrievedAt;
     }
+
     public function toArray(): array
     {
         return [
@@ -150,17 +154,19 @@ class OEmbedResponse implements Arrayable
             'width' => $this->width,
             'height' => $this->height,
             'title' => $this->title,
-            'retrieved_at' => $this->retrievedAt->toJSON()
+            'retrieved_at' => $this->retrievedAt->toJSON(),
         ];
     }
 
     public function render(bool $throw = false): mixed
     {
         $provider = app(OEmbed::class)->get($this->provider);
-        if (!$provider) {
+        if (! $provider) {
             throw_if($throw, new ProviderNotFoundException($this->provider));
+
             return null;
         }
+
         return $provider->render($this);
     }
 }

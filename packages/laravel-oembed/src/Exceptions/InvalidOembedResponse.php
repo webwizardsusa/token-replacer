@@ -2,7 +2,4 @@
 
 namespace Webwizardsusa\OEmbed\Exceptions;
 
-class InvalidOembedResponse extends OEmbedException
-{
-
-}
+class InvalidOembedResponse extends OEmbedException {}

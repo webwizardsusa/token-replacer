@@ -2,11 +2,11 @@
 
 namespace Filapress\RichEditor\Actions;
 
-use Filapress\RichEditor\FPRichEditor;
 use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filapress\RichEditor\FPRichEditor;
 
 class LinkAction extends Action
 {
@@ -60,14 +60,14 @@ class LinkAction extends Action
             ])->action(function (FPRichEditor $component, $data, $arguments) {
                 $remove = \Arr::get($arguments, 'remove', false);
                 $data['inclusive'] = false;
-                $component->sendActionToEditor(!$remove ? 'setLink' : 'unsetLink',$arguments, $data);
+                $component->sendActionToEditor(! $remove ? 'setLink' : 'unsetLink', $arguments, $data);
             })->extraModalFooterActions(function (Action $action): array {
 
                 if (\Arr::get($action->getArguments(), 'href', '') !== '') {
                     return [
                         $action->makeModalSubmitAction('remove_link', ['remove' => true])
                             ->color('danger')
-                            ->extraAttributes(function () use ($action) {
+                            ->extraAttributes(function () {
                                 return [
                                     'style' => 'margin-inline-start: auto;',
                                 ];
@@ -78,6 +78,4 @@ class LinkAction extends Action
                 return [];
             });
     }
-
-
 }

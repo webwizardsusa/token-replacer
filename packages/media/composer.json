@@ -24,9 +24,11 @@
     "require": {
         "php": "^8.2",
         "filament/filament": "^3.0",
+        "filapress/core": "self.version",
         "illuminate/support": "^10.0|^11.0",
         "illuminate/http": "^10.0|^11.0",
         "illuminate/contracts": "^10.0|^11.0",
+        "intervention/image": "^3.9",
         "ext-dom": "*"
     },
     "require-dev": {

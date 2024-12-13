@@ -9,7 +9,6 @@ use Filament\View\PanelsRenderHook;
 
 class RichEditorPlugin implements Plugin
 {
-
     public function getId(): string
     {
         return 'filapress-rich-editor';
@@ -17,7 +16,7 @@ class RichEditorPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
-        FilamentView::registerRenderHook(PanelsRenderHook::HEAD_END, function(){
+        FilamentView::registerRenderHook(PanelsRenderHook::HEAD_END, function () {
             return view('filapress-rich-editor::head');
         });
     }

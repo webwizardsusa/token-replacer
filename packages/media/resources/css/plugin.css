@@ -1,0 +1,205 @@
+
+.filapress-media-table-record {
+    position: relative;
+}
+
+.filapress-media-table-record {
+    @apply border-2 border-transparent;
+}
+
+.filapress-media-table-record:has(input:checked),
+.media-browser-selected {
+    @apply border-2  border-primary-500;
+
+}
+
+.filapress-media-table-record > div > label {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 30px;
+    opacity: 0;
+    z-index: 5;
+    cursor: pointer;
+
+}
+
+.filapress-media-thumbnail {
+    margin: 0 auto;
+}
+
+.filapress-media-card {
+
+}
+
+.filapress-media-table-record > .flex {
+    padding: 0;
+
+    .fi-ta-actions {
+        @apply justify-center my-2;
+        z-index: 10;
+    }
+}
+
+.filapress-media-table-record > .flex > .flex {
+    padding: 0;
+    display: block;
+
+    & > .flex-1 > .block {
+        padding: 0 !important;
+
+        & > div:not(:first-child) {
+            @apply ps-2;
+        }
+    }
+}
+
+.filapress-media-insert-window {
+    @apply grid grid-cols-1 md:grid-cols-12 gap-4;
+    overflow-y: auto;
+
+    .preview-panel {
+        @apply md:col-span-8;
+        height: 100%;
+        min-height: 450px;
+        .filapress-media-preview {
+            width: 100%;
+            height: 100%;
+        }
+        .media-item {
+            img {
+                width: auto;
+                height:auto;
+                max-width: 100%;
+                max-height: 100%;
+            }
+            a {
+            }
+        }
+    }
+
+    .insert-form {
+        @apply col-span-1 md:col-span-4 p-2;
+    }
+}
+
+.filapress-media-info {
+    @apply border border-gray-600 dark:border-gray-500 rounded-lg p-2 bg-white dark:bg-white/5;
+
+    th {
+        @apply font-bold text-left;
+        padding-right: 10px;
+    }
+}
+
+.filapress-media-browser {
+    @apply bg-white dark:bg-gray-900;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+
+    .media-browser-header {
+        @apply border-b border-gray-600 dark:border-gray-500 flex gap-4 items-center p-2;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 56px;
+
+        h4 {
+            @apply text-lg font-bold;
+        }
+    }
+
+    .media-browser-content {
+        position: absolute;
+        top: 56px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow-y: auto;
+    }
+
+    .fi-ta-ctn {
+        border-radius: 0 !important;
+    }
+
+    .browser-create-button {
+        @apply rounded-full p-2 flex;
+        padding: 10px !important;
+        text-align: center;
+        .fi-btn-label {
+            display: none;
+        }
+    }
+
+    .media-browser-items {
+        @apply p-4 border-t border-t-gray-200 dark:border-t-white/10;
+        &:not(.is-empty) {
+            @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 ;
+        }
+        &.is-empty {
+            text-align: center;
+        }
+    }
+
+    .media-browser-filters {
+        @apply p-4 bg-gray-50 dark:bg-white/5 flex items-center gap-4;
+        .filters-form
+        {
+            flex: 1;
+            & > div {
+                @apply flex flex-row gap-4 ;
+
+            }
+
+        }
+    }
+}
+
+body:has(.filapress-media-browser) {
+    overflow: hidden;
+}
+
+.filapress-media-preview {
+
+    background: linear-gradient(45deg, #222 25%, transparent 25%) -25px 0,
+    linear-gradient(45deg, transparent 75%, #222 75%) -25px 0,
+    linear-gradient(45deg, transparent 75%, #222 75%) 0 -25px,
+    linear-gradient(45deg, #222 25%, transparent 25%) 0 -25px;
+    background-size: 50px 50px; /* Half the original size */
+    background-color: #333; /* Base color */
+    display: block;
+    .media-item {
+        &>a {
+            @apply flex max-w-full max-h-full;
+            img {
+                @apply max-w-full max-h-full object-contain;
+            }
+        }
+    }
+}
+
+
+
+.editor-has-focus {
+    .fp-media-node {
+        &.ProseMirror-selectednode {
+            @apply border border-primary-500 border-dashed;
+        }
+    }
+}
+
+.ProseMirror {
+    &:after {
+        content: "";
+        display: block;
+        clear: both;
+    }
+}
+
