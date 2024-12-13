@@ -6,6 +6,7 @@ use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Field;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
+use Filapress\Core\Assets\FilapressJs;
 use Filapress\RichEditor\Contracts\PluginAsExternalAssets;
 use Filapress\RichEditor\Contracts\PluginHasDialog;
 use Filapress\RichEditor\Plugins\AbstractPlugin;
@@ -299,6 +300,17 @@ class FPRichEditor extends Field
             }
         }
 
-        return collect($externals)->toArray();
+
+        return collect($externals)
+            ->map(function ($asset) {
+                if ($asset instanceof FilapressJs) {
+                    return [
+                        'src' => $asset->getSrc(),
+                        'type' => 'script',
+                        'module' => $asset->fileIsHot(),
+                    ];
+                }
+                return $asset;
+            })->toArray();
     }
 }

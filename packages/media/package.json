@@ -1,0 +1,26 @@
+{
+  "name": "@filapress/media",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:scripts": "node bin/build.js --dev",
+    "build:scripts": "node bin/build.js",
+    "dev": "npm-run-all --parallel dev:*",
+    "build": "npm-run-all build:*",
+    "prettier": "npx prettier --write ."
+  },
+  "author": "Jamie Holly <jamie@webwizardsusa.com> (https://webwizardsusa.com)",
+  "license": "MIT",
+  "description": "",
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "esbuild": "^0.19.4",
+    "lodash": "^4.17.21",
+    "lowlight": "^2.9.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.7.1",
+    "prettier-plugin-blade": "^1.5.3",
+    "prettier-plugin-tailwindcss": "^0.1.13"
+  }
+}

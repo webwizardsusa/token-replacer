@@ -2,6 +2,7 @@
 
 namespace Filapress\Media\Editor;
 
+use Filapress\Core\Assets\FilapressJs;
 use Filapress\Media\Elements\MediaElement;
 use Filapress\RichEditor\Assets\ViteScript;
 use Filapress\RichEditor\Contracts\PluginAsExternalAssets;
@@ -40,7 +41,7 @@ class MediaPlugin extends AbstractPlugin implements PluginAsExternalAssets
     public function externalAssets(): array
     {
         return [
-            ViteScript::make('packages/media/resources/js/RichEditorMediaPlugin.js'),
+            FilapressJs::getInstance('media-editor-plugin', 'filapress/media'),
         ];
     }
 

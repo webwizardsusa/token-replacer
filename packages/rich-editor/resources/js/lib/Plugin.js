@@ -20,6 +20,9 @@ class Plugin {
     get component() {
         return this._instance._component;
     }
-}
 
+    get editor() {
+        return this._instance._editor;
+    }
+}
 export default Plugin;

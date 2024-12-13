@@ -254,7 +254,7 @@ abstract class ImageType extends MediaType implements GeneratesFakeMedia
         } elseif ($attributes['link_type'] === '__source__') {
             $attributes['link'] = $media->getUrl();
         }
-        $attributes['data-preview'] = $this->render($media, $attributes, false)->render();
+        $attributes['data-preview'] = $this->render($media, null, $attributes, false)->render();
         return $attributes;
     }
 

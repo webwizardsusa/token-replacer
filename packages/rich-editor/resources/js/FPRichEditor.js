@@ -45,7 +45,7 @@ window.FPRichEditor.tiptap = TipTap;
 /**
  * @type {{ FPRichEditor: { tiptap: TipTap } }}
  */
-
+console.log("LOADED HOT");
 
 function editorInstanceFromStatePath(statePath) {
     for (let id in editorInstances) {
@@ -288,8 +288,6 @@ let FPRichEditor = function({
             let el = this.$el.querySelector('.fp-rich-editor-content');
             let _this = this;
             let editorInstance = this.editorInstance(this);
-
-            console.log(this.state)
             let editor = new TipTap.Editor({
                 element: el,
                 extensions: _this.getPlugins(),

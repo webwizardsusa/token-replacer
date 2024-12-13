@@ -25,7 +25,7 @@ export default defineConfig((({ command }) => ({
                 'packages/**/resources/js/*.js',
                 'packages/**/resources/css/*.js',
                 'packages/**/src/Filament/**/*.php',
-                'packages/media/resources/js/*.js',
+                'packages/media/resources/js/**/*.js',
                 'packages/media/resources/css/*.css',
                 'resources/css/filament/admin/theme.css',
             ],

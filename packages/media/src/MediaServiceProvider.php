@@ -2,6 +2,9 @@
 
 namespace Filapress\Media;
 
+use Filament\Support\Assets\Js;
+use Filament\Support\Facades\FilamentAsset;
+use Filapress\Core\Assets\FilapressJs;
 use Filapress\Core\Events\FilapressPluginRegisterEvent;
 use Filapress\Core\Events\RegisterPermissionsEvent;
 use Filapress\Media\Filament\FilapressMediaResource;
@@ -43,8 +46,9 @@ class MediaServiceProvider extends ServiceProvider
         });
 
         Event::listen(FilapressPluginRegisterEvent::class, function (FilapressPluginRegisterEvent $event) {
-
-            $event->panel->renderHook('panels::body.end', fn () => Livewire::mount('filapress-media-browser-window'));
+            if (!request()->hasHeader('x-livewire')) {
+                $event->panel->renderHook('panels::body.end', fn () => Livewire::mount('filapress-media-browser-window'));
+            }
         });
     }
 
@@ -57,5 +61,12 @@ class MediaServiceProvider extends ServiceProvider
         \Blade::component('filapress-media-preview', MediaPreviewComponent::class);
         Event::listen(RegisterPermissionsEvent::class, MediaPermissionsListener::class);
         Gate::policy(FilapressMedia::class, config('filapress.media.policy', FilapressMediaPolicy::class));
+        FilamentAsset::register([
+            FilapressJs::make('media-api', __DIR__.'/../dist/media-api.js')
+                ->dev(__DIR__ . '/../resources/js/MediaBrowserApi.js'),
+            FilapressJs::make('media-editor-plugin', __DIR__.'/../dist/media-editor-plugin.js')
+                ->loadedOnRequest(true)
+                ->dev(__DIR__ . '/../resources/js/RichEditorMediaPlugin.js'),
+        ], 'filapress/media');
     }
 }
