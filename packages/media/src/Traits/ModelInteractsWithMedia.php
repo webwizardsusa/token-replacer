@@ -17,11 +17,11 @@ trait ModelInteractsWithMedia
         });
 
         static::deleted(function ($model) {
-            if (!isset($model->forceDeleting) || $model->forceDeleting) {
+            if (! isset($model->forceDeleting) || $model->forceDeleting) {
                 FilapressMediaUsage::query()
                     ->where('usage_type', $model->getMorphClass())
                     ->where('usage_id', $model->getKey())
-                  ->delete();
+                    ->delete();
             }
         });
     }
@@ -34,13 +34,13 @@ trait ModelInteractsWithMedia
             ->where('usage_id', $this->getKey())
             ->get('media_id')
             ->pluck('media_id')
-        ->toArray();
+            ->toArray();
 
         $toAdd = array_diff($items, $existingIds);
         $toDelete = array_diff($existingIds, $items);
 
         // Delete obsolete media usages
-        if (!empty($toDelete)) {
+        if (! empty($toDelete)) {
             FilapressMediaUsage::query()
                 ->where('usage_type', $this->getMorphClass())
                 ->where('usage_id', $this->getKey())
@@ -60,8 +60,6 @@ trait ModelInteractsWithMedia
 
     /**
      * Return an array of media ids of all media used in this model.
-     *
-     * @return array
      */
     abstract public function getMediaItems(): array;
 }

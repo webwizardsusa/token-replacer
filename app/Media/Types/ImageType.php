@@ -7,8 +7,6 @@ use Filapress\Media\Models\FilapressMedia;
 
 class ImageType extends \Filapress\Media\Types\ImageType
 {
-
-
     public function canCreate(?User $user): bool
     {
         return $user !== null;

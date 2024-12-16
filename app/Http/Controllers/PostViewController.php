@@ -14,6 +14,7 @@ class PostViewController
             ->where('published', true)
             ->orderBy('published_at', 'desc')
             ->limit(3);
+
         return view('post', [
             'post' => $post,
             'latest' => $latestPosts->get(),

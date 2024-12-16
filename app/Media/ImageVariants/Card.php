@@ -7,7 +7,6 @@ use Intervention\Image\Image;
 
 class Card extends ImageVariant
 {
-
     public function name(): string
     {
         return 'card';
@@ -16,6 +15,7 @@ class Card extends ImageVariant
     protected function process(Image $image): static
     {
         $this->generated = $image->cover(1200, 800, $this->option('focal_point', 'center'));
+
         return $this;
     }
 }

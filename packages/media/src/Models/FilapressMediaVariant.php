@@ -2,19 +2,9 @@
 
 namespace Filapress\Media\Models;
 
-use App\Models\User;
-use Filapress\Media\Dev\FilapressMediaFactory;
-use Filapress\Media\MediaCollection;
-use Filapress\Media\MediaCollections;
-use Filapress\Media\MediaType;
-use Filapress\Media\MediaTypes;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Storage;
 
@@ -27,7 +17,6 @@ class FilapressMediaVariant extends Model
 
     protected $table = 'filapress_media_variants';
 
-
     protected $guarded = [];
 
     protected $casts = [
@@ -37,7 +26,6 @@ class FilapressMediaVariant extends Model
         'filesize' => 'integer',
     ];
 
-
     public static function boot(): void
     {
         parent::boot();
@@ -45,6 +33,7 @@ class FilapressMediaVariant extends Model
             $variant->deleteFiles();
         });
     }
+
     public function media(): BelongsTo
     {
         return $this->belongsTo(FilapressMedia::class, 'media_id');
@@ -92,11 +81,10 @@ class FilapressMediaVariant extends Model
         return null;
     }
 
-    public function render(?string $size = null,array $attributes = [], bool $preview = false)
+    public function render(?string $size = null, array $attributes = [], bool $preview = false)
     {
         return $this->getType()->render($this, $size, $attributes, $preview);
     }
-
 
     public function deleteFiles(): static
     {
@@ -109,7 +97,7 @@ class FilapressMediaVariant extends Model
         $this->disk = '';
         $this->path = '';
         $this->sizes = [];
+
         return $this;
     }
-
 }

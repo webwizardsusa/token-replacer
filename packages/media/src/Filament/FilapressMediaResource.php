@@ -14,8 +14,6 @@ use Filament\Tables\Actions\ForceDeleteBulkAction;
 use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Columns\Layout\Grid;
-use Filament\Tables\Columns\Layout\View;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
@@ -50,13 +48,13 @@ class FilapressMediaResource extends Resource
     public static function table(Table $table): Table
     {
         $types = collect(app(MediaTypes::class)->all())
-            ->filter(fn(MediaType $type) => $type->userCan('list'))
-            ->mapWithKeys(fn(MediaType $type) => [$type->name() => $type->label()])
+            ->filter(fn (MediaType $type) => $type->userCan('list'))
+            ->mapWithKeys(fn (MediaType $type) => [$type->name() => $type->label()])
             ->toArray();
 
         $collections = collect(app(MediaCollections::class)->all())
-            ->filter(fn(MediaCollection $type) => $type->canList(\Auth::user()))
-            ->mapWithKeys(fn(MediaCollection $type) => [$type->name() => $type->label()])
+            ->filter(fn (MediaCollection $type) => $type->canList(\Auth::user()))
+            ->mapWithKeys(fn (MediaCollection $type) => [$type->name() => $type->label()])
             ->toArray();
 
         return $table
@@ -66,16 +64,16 @@ class FilapressMediaResource extends Resource
                 ImageColumn::make('thumbnail_path')->label('Thumbnail')
                     ->width(150)
                     ->height(150)
-                    ->disk(fn(FilapressMedia $media) => $media->thumbnail_disk),
+                    ->disk(fn (FilapressMedia $media) => $media->thumbnail_disk),
                 TextColumn::make('title')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('type')
                     ->sortable()
-                    ->formatStateUsing(fn(FilapressMedia $record) => $record->getType()->label()),
+                    ->formatStateUsing(fn (FilapressMedia $record) => $record->getType()->label()),
                 TextColumn::make('collection')
                     ->sortable()
-                    ->formatStateUsing(fn(FilapressMedia $record) => $record->getCollection() ? $record->getCollection()->label() : '-'),
+                    ->formatStateUsing(fn (FilapressMedia $record) => $record->getCollection() ? $record->getCollection()->label() : '-'),
                 TextColumn::make('width')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -98,15 +96,15 @@ class FilapressMediaResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('type')
-                    ->visible(!empty($types))
+                    ->visible(! empty($types))
                     ->multiple()
                     ->options($types),
                 SelectFilter::make('collection')
-                    ->visible(!empty($collections))
+                    ->visible(! empty($collections))
                     ->multiple()
                     ->options($collections),
                 TrashedFilter::make()
-                    ->visible()
+                    ->visible(),
             ])
             ->actions([
                 ActionGroup::make([
@@ -116,7 +114,7 @@ class FilapressMediaResource extends Resource
                         ->visible(),
                     ForceDeleteAction::make()
                         ->visible(),
-                ])
+                ]),
             ])
             ->bulkActions([
                 BulkActionGroup::make([

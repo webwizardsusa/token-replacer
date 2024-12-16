@@ -4,17 +4,14 @@ namespace Filapress\Media\Views\Livewire;
 
 use Livewire\Attributes\On;
 use Livewire\Component;
+
 class ModalWindow extends Component
 {
     public bool $visible = false;
 
     public array $options = [];
 
-    public function mount()
-    {
-
-
-    }
+    public function mount() {}
 
     #[On('open-filapress-media-browser')]
     public function openModal($options): void

@@ -83,14 +83,14 @@ class PostResource extends Resource
                         Forms\Components\Select::make('user_id')
                             ->relationship('user', 'name')
                             ->searchable()
-                        ->label('Author'),
+                            ->label('Author'),
 
                         Toggle::make('published')->label('Published')
                             ->live(),
                         DateTimePicker::make('published_at')->label('Publish Date')
-                            ->visible(fn(Forms\Get $get): bool => $get('published'))
-                            ->helperText('You can set the published date, or leave blank to set the published date to the time when the post is saved.')
-                    ])
+                            ->visible(fn (Forms\Get $get): bool => $get('published'))
+                            ->helperText('You can set the published date, or leave blank to set the published date to the time when the post is saved.'),
+                    ]),
             ]);
     }
 

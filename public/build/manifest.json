@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-B7HKS_MZ.css",
+    "file": "assets/app-Cb4CLCq6.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -10,13 +10,13 @@
     "isEntry": true
   },
   "resources/js/Editor/OEmbed/oembed.js": {
-    "file": "assets/oembed-CSOSdWEK.js",
+    "file": "assets/oembed-aDjQCjFL.js",
     "name": "oembed",
     "src": "resources/js/Editor/OEmbed/oembed.js",
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-BYNNhIeb.js",
+    "file": "assets/app-FQo98LDq.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true

@@ -23,17 +23,17 @@ abstract class TestCase extends BaseTestCase
     {
         foreach (config('filesystems.disks') as $name => $config) {
             $config['driver'] = 'local';
-            $config['root'] = __DIR__ . '/Support/Files/' . $name;
+            $config['root'] = __DIR__.'/Support/Files/'.$name;
             File::ensureDirectoryExists($config['root']);
             config()->set("filesystems.disks.{$name}", $config);
         }
     }
 
-    protected function destroyTempFileSystem(): void {
-        $directories = File::directories(__DIR__ . '/Support/Files/');
+    protected function destroyTempFileSystem(): void
+    {
+        $directories = File::directories(__DIR__.'/Support/Files/');
         foreach ($directories as $directory) {
             File::deleteDirectory($directory);
         }
     }
-
 }

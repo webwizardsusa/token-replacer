@@ -70,7 +70,6 @@ abstract class RefinerDefinition
             $html = $element->preFilter($html, $this);
         }
 
-
         foreach ($this->filters() as $filter) {
             $html = $filter->preProcess($html, $this);
         }

@@ -9,42 +9,34 @@ use Filapress\Media\Models\FilapressMedia;
 use Filapress\Media\Models\FilapressMediaUsage;
 use Illuminate\Console\Command;
 
-class DemoReset extends Command
+class DemoSave extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'demo:reset';
+    protected $signature = 'demo:save';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Reset the demo';
+    protected $description = 'Create a new set of demo data';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $this->info('Resetting demo');
-        $this->call('migrate:fresh');
-        \Storage::disk('public')->deleteDirectory('images');
-        $this->info('Creating users');
+
+        $this->createPostsDump();
+        $this->createOEmbedsDump();
         $this->createUsers();
-        $this->info('Creating Media');
         $this->createMedia();
-        $this->info('Creating oembeds');
-        $this->createOEmbeds();
-        $this->info('Creating posts');
-        $this->createPosts();
-        // $this->createPostsDump();
-        //$this->createUsers();
-        //$this->createMedia();
-        // $this->createMediaDump();
+        $this->createMediaDump();
+        $this->output->success('Done');
     }
 
     public function createPosts(): void

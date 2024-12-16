@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 
 abstract class MediaCollection
 {
-
     abstract public function label(): string;
 
     public function name(): string
@@ -27,7 +26,7 @@ abstract class MediaCollection
         return null;
     }
 
-    public function canView(User $user, FilapressMedia $media  ): ?bool
+    public function canView(User $user, FilapressMedia $media): ?bool
     {
         return null;
     }

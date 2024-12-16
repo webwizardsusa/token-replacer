@@ -4,7 +4,6 @@ namespace Filapress\Media\Actions;
 
 use Filapress\Media\Images\ImageFactory;
 use Filapress\Media\Models\FilapressMedia;
-use Filapress\Media\PathGenerators\PathGeneratorFactory;
 use Filapress\Media\Support\FileUtils;
 use Illuminate\Support\Facades\Storage;
 use Webwizardsusa\TokenReplace\TokenReplacer;
@@ -13,10 +12,10 @@ use Webwizardsusa\TokenReplace\Transformers\FileTransformer;
 
 class ThumbnailGenerator
 {
-
     protected FilapressMedia $media;
 
-    public function __construct(FilapressMedia $media) {
+    public function __construct(FilapressMedia $media)
+    {
 
         $this->media = $media;
     }
@@ -40,7 +39,7 @@ class ThumbnailGenerator
         $this->media->thumbnail_disk = config('filapress.media.thumbnail_disk');
         $path = (new TokenReplacer(config('filapress.media.thumbnail_path')))
             ->with('file', new FileTransformer($this->media->path))
-            ->with('date', new DateTransformer())
+            ->with('date', new DateTransformer)
             ->transform();
         $path = FileUtils::replaceExtension($path, 'jpg');
         $this->media->thumbnail_path = $path;

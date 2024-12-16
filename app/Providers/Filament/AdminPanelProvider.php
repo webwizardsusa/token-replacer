@@ -61,9 +61,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationItems([
                 NavigationItem::make('Back To Site')
-                ->url(fn() => URL::route('home'))
-                ->sort(-100)
-                ->icon('heroicon-o-arrow-uturn-left'),
+                    ->url(fn () => URL::route('home'))
+                    ->sort(-100)
+                    ->icon('heroicon-o-arrow-uturn-left'),
             ])
             ->plugins([
                 new RichEditorPlugin,

@@ -11,8 +11,8 @@ class MediaBrowserField extends Field
     protected string $view = 'filapress-media::components.form.media-browser-field';
 
     protected array|Closure $types = [];
-    protected string|Closure|null $collection = null;
 
+    protected string|Closure|null $collection = null;
 
     private ?FilapressMedia $media = null;
 
@@ -22,10 +22,10 @@ class MediaBrowserField extends Field
         $this->live();
     }
 
-
     public function collection(string|Closure|null $collection): static
     {
         $this->collection = $collection;
+
         return $this;
     }
 
@@ -33,6 +33,7 @@ class MediaBrowserField extends Field
     {
         return $this->evaluate($this->collection);
     }
+
     public function types(array|Closure $types): static
     {
         $this->types = $types;

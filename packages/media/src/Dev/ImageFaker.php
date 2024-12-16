@@ -122,6 +122,7 @@ class ImageFaker
     {
         return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
     }
+
     public function generateLocal(): string
     {
         $filename = $this->filename.'.jpg';
@@ -138,13 +139,13 @@ class ImageFaker
             $randomX2 = mt_rand(0, $this->getWidth() / 2);
             $randomY2 = mt_rand(0, $this->getHeight() / 2);
 
-            if (rand(1,6) > 3) {
-                $image->drawRectangle($randomX1, $randomY1, function(RectangleFactory $rectangle) use ($randomX2, $randomY2){
+            if (rand(1, 6) > 3) {
+                $image->drawRectangle($randomX1, $randomY1, function (RectangleFactory $rectangle) use ($randomX2, $randomY2) {
                     $rectangle->size($randomX2, $randomY2);
                     $rectangle->background($this->randomColor());
                 });
             } else {
-                $image->drawCircle($randomX1, $randomY1, function(CircleFactory $circle) use ($randomX2, $randomY2){
+                $image->drawCircle($randomX1, $randomY1, function (CircleFactory $circle) {
                     $circle->radius(rand(20, $this->width / 2));
                     $circle->background($this->randomColor());
                 });

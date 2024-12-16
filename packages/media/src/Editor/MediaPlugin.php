@@ -4,21 +4,17 @@ namespace Filapress\Media\Editor;
 
 use Filapress\Core\Assets\FilapressJs;
 use Filapress\Media\Elements\MediaElement;
-use Filapress\RichEditor\Assets\ViteScript;
 use Filapress\RichEditor\Contracts\PluginAsExternalAssets;
-use Filapress\RichEditor\FPRichEditor;
 use Filapress\RichEditor\Plugins\AbstractPlugin;
 
 class MediaPlugin extends AbstractPlugin implements PluginAsExternalAssets
 {
-
     public ?string $collection = null;
 
     public function name(): string
     {
         return 'media';
     }
-
 
     public static function make(): static
     {
@@ -28,6 +24,7 @@ class MediaPlugin extends AbstractPlugin implements PluginAsExternalAssets
     public function collection(?string $collection): static
     {
         $this->collection = $collection;
+
         return $this;
     }
 
@@ -35,8 +32,6 @@ class MediaPlugin extends AbstractPlugin implements PluginAsExternalAssets
     {
         return $this->collection;
     }
-
-
 
     public function externalAssets(): array
     {
@@ -57,10 +52,11 @@ class MediaPlugin extends AbstractPlugin implements PluginAsExternalAssets
             ->extract($state);
 
         foreach ($items as $item) {
-           $attributes = \Arr::only($item->getAttributes(), ['media', 'alt', 'align', 'link']);
-           $item->setAttributes($attributes);
-           $state = str_replace($item->raw(), $item->render(), $state);
+            $attributes = \Arr::only($item->getAttributes(), ['media', 'alt', 'align', 'link']);
+            $item->setAttributes($attributes);
+            $state = str_replace($item->raw(), $item->render(), $state);
         }
+
         return $state;
     }
 }

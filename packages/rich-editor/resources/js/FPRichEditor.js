@@ -45,7 +45,6 @@ window.FPRichEditor.tiptap = TipTap;
 /**
  * @type {{ FPRichEditor: { tiptap: TipTap } }}
  */
-console.log("LOADED HOT");
 
 function editorInstanceFromStatePath(statePath) {
     for (let id in editorInstances) {

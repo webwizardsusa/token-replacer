@@ -166,12 +166,9 @@ window.FPRichEditor.registerPlugin('media', {
 
             addNodeView() {
                 return ({node, editor}) => {
-
                     let dom = document.createElement('div');
-
                     let preview = PreviewCache[node.attrs.media];
                     if (preview) {
-
                         dom.innerHTML = preview;
                         dom = dom.firstElementChild;
                         dom.querySelectorAll('a').forEach(a => {
@@ -216,12 +213,3 @@ window.FPRichEditor.registerPlugin('media', {
         });
     }
 })
-
-/**
- *
- * @param editor {import("@tiptap/core").Editor}
- * @param searchString
- * @returns {*[]}
- */
-
-

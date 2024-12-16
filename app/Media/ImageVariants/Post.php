@@ -2,7 +2,4 @@
 
 namespace App\Media\ImageVariants;
 
-class Post
-{
-
-}
+class Post {}

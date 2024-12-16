@@ -54,10 +54,10 @@ class CreateFilapressMedia extends CreateRecord
         $schema = $this->getType()->form($form);
 
         $collections = collect(app(MediaCollections::class)->all())
-            ->filter(fn(MediaCollection $type) => $type->canCreate())
-            ->mapWithKeys(fn(MediaCollection $type) => [$type->name() => $type->label()])
+            ->filter(fn (MediaCollection $type) => $type->canCreate())
+            ->mapWithKeys(fn (MediaCollection $type) => [$type->name() => $type->label()])
             ->toArray();
-        if (!empty($collections)) {
+        if (! empty($collections)) {
             $schema[] = Select::make('collection')
                 ->options($collections);
         }
@@ -79,6 +79,7 @@ class CreateFilapressMedia extends CreateRecord
         }
 
         $record->save();
+
         return $record;
     }
 }

@@ -6,9 +6,8 @@ use Filapress\Media\Models\FilapressMedia;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Renderable;
 
-class RenderAction implements Renderable, Htmlable
+class RenderAction implements Htmlable, Renderable
 {
-
     protected FilapressMedia $media;
 
     protected ?string $variant = null;
@@ -19,12 +18,11 @@ class RenderAction implements Renderable, Htmlable
 
     protected bool $fallbackToOriginal = false;
 
-
-    public function __construct(FilapressMedia $media) {
+    public function __construct(FilapressMedia $media)
+    {
 
         $this->media = $media;
     }
-
 
     public static function make(FilapressMedia $media): static
     {
@@ -34,28 +32,33 @@ class RenderAction implements Renderable, Htmlable
     public function attributes(array $attributes): static
     {
         $this->attributes = $attributes;
+
         return $this;
     }
 
     public function variant(?string $variant): static
     {
         $this->variant = $variant;
+
         return $this;
     }
 
     public function preview(bool $preview = true): static
     {
         $this->preview = $preview;
+
         return $this;
     }
 
     public function fallbackToOriginal(bool $fallbackToOriginal = true): static
     {
         $this->fallbackToOriginal = $fallbackToOriginal;
+
         return $this;
     }
 
-    public function render() {
+    public function render()
+    {
         $media = $this->media;
         $variant = null;
         if ($this->variant) {
@@ -64,7 +67,6 @@ class RenderAction implements Renderable, Htmlable
 
         return $this->media->getType()->render($media, $variant, $this->attributes, $this->preview);
     }
-
 
     public function toHtml()
     {

@@ -19,6 +19,7 @@ class FilapressMediaFactory extends Factory
     {
 
         $collection = app(MediaCollections::class)->all()->random()?->name();
+
         return [
             'user_id' => (int) User::inRandomOrder()->first()?->id,
             'type' => $this->getType(),

@@ -1,11 +1,10 @@
 <?php
 
-use Filapress\Media\MediaTypes;
 use Filapress\Media\Models\FilapressMedia;
 use Filapress\Media\Models\FilapressMediaUsage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\UploadedFile;
 use Webwizardsusa\TokenReplace\Transformers\DateTransformer;
+
 use function PHPUnit\Framework\assertEquals;
 
 uses(RefreshDatabase::class);
@@ -27,14 +26,14 @@ it('it tracks media usages', function () {
 
 it('it handles soft deletes', function () {
     $media = FilapressMedia::factory()->create();
-    $variant = new \App\Media\ImageVariants\Card();
+    $variant = new \App\Media\ImageVariants\Card;
     $variant->generateFromStorage($media->disk, $media->path);
     if ($variant->isGenerated()) {
         $savePath = \Webwizardsusa\TokenReplace\TokenReplacer::from(config('filapress.media.variant_path'))
             ->with('file', new \Webwizardsusa\TokenReplace\Transformers\FileTransformer($media->path))
-            ->with('date', new DateTransformer())
+            ->with('date', new DateTransformer)
             ->with('variant', new \Webwizardsusa\TokenReplace\Transformers\ArrayTransformer([
-                'name' => 'card'
+                'name' => 'card',
             ]))
             ->transform();
         $variant->saveTo($savePath, $media->disk);

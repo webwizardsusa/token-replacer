@@ -39,7 +39,8 @@ class ImageFactory
         return $image;
     }
 
-    public function create(int $width, int $height): ImageInterface {
+    public function create(int $width, int $height): ImageInterface
+    {
         return $this->manager->create($width, $height);
     }
 }

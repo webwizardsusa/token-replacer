@@ -14,7 +14,6 @@ use Filapress\Media\Contracts\GeneratesFakeMedia;
 use Filapress\Media\Dev\ImageFaker;
 use Filapress\Media\Filament\Components\Form\MediaUpload;
 use Filapress\Media\Images\ImageFactory;
-use Filapress\Media\ImageVariants;
 use Filapress\Media\MediaType;
 use Filapress\Media\Models\FilapressMedia;
 use Filapress\Media\Models\FilapressMediaVariant;
@@ -24,22 +23,21 @@ use Illuminate\Http\UploadedFile;
 use Intervention\Image\Image;
 use Storage;
 use Webwizardsusa\TokenReplace\TokenReplacer;
-use Webwizardsusa\TokenReplace\Transformers\ArrayTransformer;
 use Webwizardsusa\TokenReplace\Transformers\DateTransformer;
 use Webwizardsusa\TokenReplace\Transformers\FileTransformer;
 
 abstract class ImageType extends MediaType implements GeneratesFakeMedia
 {
     use MediaHasVariations;
-    public static function configure(?string           $disk = null,
-                                     string|array|null $path = null,
-                                     array             $types = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
-                                     ?string           $maxSize = null,
-                                     ?int              $jpegQuality = null,
-                                     array             $responsiveSizes = [],
-                                     array             $variants = []
-    ): array
-    {
+
+    public static function configure(?string $disk = null,
+        string|array|null $path = null,
+        array $types = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
+        ?string $maxSize = null,
+        ?int $jpegQuality = null,
+        array $responsiveSizes = [],
+        array $variants = []
+    ): array {
         return [
             'class' => static::class,
             'disk' => $disk,
@@ -61,7 +59,7 @@ abstract class ImageType extends MediaType implements GeneratesFakeMedia
     {
         return TokenReplacer::from($token)
             ->with('file', new FileTransformer($file instanceof UploadedFile ? $file->getClientOriginalName() : $file))
-            ->with('date', new DateTransformer());
+            ->with('date', new DateTransformer);
 
     }
 
@@ -87,19 +85,20 @@ abstract class ImageType extends MediaType implements GeneratesFakeMedia
         $media->filename = $file instanceof UploadedFile ? $file->getClientOriginalName() : pathinfo($file, PATHINFO_FILENAME);
 
         if (Storage::disk($media->disk)->exists($savePath)) {
-            $savePath = FileUtils::appendFileName($savePath, '-' . uniqid());
+            $savePath = FileUtils::appendFileName($savePath, '-'.uniqid());
         }
         $media->path = $savePath;
         Storage::disk($media->disk)->put($savePath, file_get_contents($path));
         $this->generateThumbnail($media);
         $this->generateResponsive($media);
         $this->generateVariants($media);
+
         return $media;
     }
 
-
-    public function generateThumbnail(FilapressMedia $media, ?Image $source = null): FilapressMedia {
-        if (!$source) {
+    public function generateThumbnail(FilapressMedia $media, ?Image $source = null): FilapressMedia
+    {
+        if (! $source) {
             $source = ImageFactory::make()->fromStorage($media->disk, $media->path);
         }
         ThumbnailGenerator::make($media)->generate();
@@ -109,7 +108,7 @@ abstract class ImageType extends MediaType implements GeneratesFakeMedia
 
     public function generateResponsive(FilapressMedia $media, ?Image $source = null): FilapressMedia
     {
-        if (!$source) {
+        if (! $source) {
             $source = ImageFactory::make()->fromStorage($media->disk, $media->path);
         }
 
@@ -121,7 +120,7 @@ abstract class ImageType extends MediaType implements GeneratesFakeMedia
         $newSizes = [];
 
         foreach ($this->responsiveSizes() as $size) {
-            $newPath = FileUtils::appendFileName($media->path, '-' . $size);
+            $newPath = FileUtils::appendFileName($media->path, '-'.$size);
             $results = ResponsiveSizeGenerator::fromImage($source, $size)
                 ->saveTo($media->disk, $newPath)
                 ->getResults();
@@ -130,12 +129,14 @@ abstract class ImageType extends MediaType implements GeneratesFakeMedia
             }
         }
         $media->sizes = $newSizes;
+
         return $media;
     }
 
     public function form(Form $form, ?FilapressMedia $record = null): array
     {
         $form->columns(1);
+
         return [
             MediaUpload::make('path')
                 ->image()
@@ -151,7 +152,6 @@ abstract class ImageType extends MediaType implements GeneratesFakeMedia
         ];
 
     }
-
 
     public function fake(FilapressMedia $media, ?int $width = null, ?int $height = null, ?string $alt = null, ?string $filename = null): FilapressMedia
     {
@@ -179,15 +179,17 @@ abstract class ImageType extends MediaType implements GeneratesFakeMedia
             $sizes[] = [
                 'url' => $sizeUrl,
                 'width' => $sizeData['width'],
-                'maxWidth' => (int)round($sizeData['width'] * config('filapress.media.responsive_variance', 1.5)),
+                'maxWidth' => (int) round($sizeData['width'] * config('filapress.media.responsive_variance', 1.5)),
                 'type' => $sizeData['mime'],
             ];
         }
         uasort($sizes, function ($a, $b) {
             return $a['maxWidth'] <=> $b['maxWidth'];
         });
+
         return $sizes;
     }
+
     public function render(FilapressMedia $media, ?FilapressMediaVariant $variant = null, array $attributes = [], bool $preview = false): mixed
     {
         $url = $variant ? $variant->getUrl() : $media->getUrl();
@@ -222,7 +224,7 @@ abstract class ImageType extends MediaType implements GeneratesFakeMedia
     {
         return [
             'Type' => $this->label(),
-            'Dimensions' => $media->width . 'x' . $media->height,
+            'Dimensions' => $media->width.'x'.$media->height,
             'Filesize' => FileUtils::convertBytesToFriendly($media->filesize),
         ];
     }
@@ -240,12 +242,13 @@ abstract class ImageType extends MediaType implements GeneratesFakeMedia
             }
         }
         $attributes['link_type'] = $attributes['link_type'] ?? 'none';
+
         return $attributes;
     }
 
     public function onInsert(FilapressMedia $media, array $attributes, array $options): array
     {
-        if (!$options['inline']) {
+        if (! $options['inline']) {
             return $attributes;
         }
 
@@ -255,6 +258,7 @@ abstract class ImageType extends MediaType implements GeneratesFakeMedia
             $attributes['link'] = $media->getUrl();
         }
         $attributes['data-preview'] = $this->render($media, null, $attributes, false)->render();
+
         return $attributes;
     }
 
@@ -270,7 +274,7 @@ abstract class ImageType extends MediaType implements GeneratesFakeMedia
                 ->options([
                     'left' => 'Left',
                     'center' => 'Center',
-                    'right' => 'Right'
+                    'right' => 'Right',
                 ]),
 
             Select::make('link_type')
@@ -285,8 +289,8 @@ abstract class ImageType extends MediaType implements GeneratesFakeMedia
 
             TextInput::make('link_url')
                 ->url()
-                ->required(fn(Get $get) => $get('link_type') === 'link')
-                ->hidden(fn(Get $get) => $get('link_type') !== 'link'),
+                ->required(fn (Get $get) => $get('link_type') === 'link')
+                ->hidden(fn (Get $get) => $get('link_type') !== 'link'),
         ];
     }
 }

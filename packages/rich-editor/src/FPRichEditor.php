@@ -250,7 +250,7 @@ class FPRichEditor extends Field
     {
         foreach ($this->plugins as $plugin) {
             if ($plugin instanceof AbstractPlugin) {
-                  $this->evaluate($plugin->stateHydratedCallback());
+                $this->evaluate($plugin->stateHydratedCallback());
             }
         }
 
@@ -260,7 +260,7 @@ class FPRichEditor extends Field
     public function getStateToDehydrate(): array
     {
         if ($callback = $this->dehydrateStateUsing) {
-            $state =  $this->evaluate($callback);
+            $state = $this->evaluate($callback);
         } else {
             $state = $this->getState();
         }
@@ -269,10 +269,9 @@ class FPRichEditor extends Field
                 $state = $plugin->stateDehydrate($state);
             }
         }
+
         return [$this->getStatePath() => $state];
     }
-
-
 
     public function withHelp(bool $with): static
     {
@@ -300,7 +299,6 @@ class FPRichEditor extends Field
             }
         }
 
-
         return collect($externals)
             ->map(function ($asset) {
                 if ($asset instanceof FilapressJs) {
@@ -310,6 +308,7 @@ class FPRichEditor extends Field
                         'module' => $asset->fileIsHot(),
                     ];
                 }
+
                 return $asset;
             })->toArray();
     }

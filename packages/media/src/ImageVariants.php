@@ -6,7 +6,6 @@ use Exception;
 
 class ImageVariants
 {
-
     /**
      * @var array | ImageVariant[]
      */
@@ -14,7 +13,7 @@ class ImageVariants
 
     public function __construct(array $variants = [])
     {
-        if (!empty($variants)) {
+        if (! empty($variants)) {
             $this->register(...$variants);
 
         }
@@ -35,8 +34,8 @@ class ImageVariants
             if (is_string($variant)) {
                 $variant = app($variant);
             }
-            if (!$variant instanceof ImageVariant) {
-                throw new Exception("Invalid variant");
+            if (! $variant instanceof ImageVariant) {
+                throw new Exception('Invalid variant');
             }
 
             $this->variants[$variant->name()] = $variant;

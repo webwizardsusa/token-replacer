@@ -40,8 +40,6 @@ function makeOembedNode(plugin) {
                 {
                     tag: 'oembed[src]',
                     getAttrs: (dom) => {
-                        console.log('Parsing node:', dom); // Add this to debug
-
                         return {
                             src: dom.getAttribute('src'),
                             title: dom.getAttribute('title'),

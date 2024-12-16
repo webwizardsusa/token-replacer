@@ -6,11 +6,14 @@ use Illuminate\Contracts\Support\Arrayable;
 
 class ImageInfo implements Arrayable
 {
-
     protected string $path;
+
     protected int $width;
+
     protected int $height;
+
     protected int $filesize;
+
     protected string $mime;
 
     public function __construct(string $path, int $width, int $height, int $filesize, string $mime)
@@ -46,7 +49,6 @@ class ImageInfo implements Arrayable
     {
         return $this->mime;
     }
-
 
     public function toArray(): array
     {

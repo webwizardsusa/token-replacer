@@ -2,7 +2,6 @@
 
 namespace Filapress\Media;
 
-
 use Filapress\Media\Actions\ResponsiveSizeGenerator;
 use Filapress\Media\Images\ImageFactory;
 use Filapress\Media\Support\FileUtils;
@@ -12,7 +11,6 @@ use Intervention\Image\Image;
 
 abstract class ImageVariant
 {
-
     protected ?Image $generated = null;
 
     protected ?string $format = null;
@@ -22,6 +20,7 @@ abstract class ImageVariant
     protected int $filesize = 0;
 
     protected ?string $mimeType = null;
+
     /**
      * @var \Illuminate\Config\Repository|\Illuminate\Foundation\Application|mixed|null
      */
@@ -46,16 +45,19 @@ abstract class ImageVariant
     public function options(array $options): static
     {
         $this->options = $options;
+
         return $this;
     }
 
     public function responsive(bool|array $responsiveSizes): static
     {
         $this->responsiveSizes = $responsiveSizes;
+
         return $this;
     }
 
-    public function getResponsiveSizes(): array {
+    public function getResponsiveSizes(): array
+    {
         if (is_array($this->responsiveSizes)) {
             return $this->responsiveSizes;
         }
@@ -63,41 +65,48 @@ abstract class ImageVariant
         if ($this->responsiveSizes) {
             return config('filapress.media.responsive_sizes', []);
         }
+
         return [];
     }
+
     abstract public function name(): string;
 
-    abstract protected function process(Image $image):static;
+    abstract protected function process(Image $image): static;
 
-    protected function guessFormat(Image $image):?string
+    protected function guessFormat(Image $image): ?string
     {
         $mime = $image->origin()->mimetype();
         if ($mime) {
             return FileUtils::extensionFromMime($mime);
         }
+
         return null;
     }
-    public function generateFromStorage(string $disk, string $path):static
+
+    public function generateFromStorage(string $disk, string $path): static
     {
         $newImage = ImageFactory::make()->fromStorage($disk, $path);
         $this->format = $this->guessFormat($newImage);
         $this->process($newImage);
+
         return $this;
     }
 
-    public function generateFromPath(string $path):static
+    public function generateFromPath(string $path): static
     {
         $newImage = ImageFactory::make()->fromPath($path);
         $this->format = $this->guessFormat($newImage);
         $this->process($newImage);
+
         return $this;
     }
 
-    public function generateFromImage(Image $image):static
+    public function generateFromImage(Image $image): static
     {
         $newImage = clone $image;
         $this->format = $this->guessFormat($newImage);
         $this->process($newImage);
+
         return $this;
     }
 
@@ -114,8 +123,8 @@ abstract class ImageVariant
             'sizes' => [],
         ];
 
-        foreach($this->getResponsiveSizes() as $size) {
-            $newPath = FileUtils::appendFileName($path, '-' . $size);
+        foreach ($this->getResponsiveSizes() as $size) {
+            $newPath = FileUtils::appendFileName($path, '-'.$size);
             $responsive = ResponsiveSizeGenerator::fromImage($this->generated, $size)
                 ->saveTo($disk, $newPath)
                 ->getResults();

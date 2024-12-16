@@ -2,16 +2,14 @@
 
 namespace Filapress\Media\Elements;
 
-use App\Models\OEmbed;
 use Filapress\Media\Models\FilapressMedia;
 use Webwizardsusa\HtmlRefiner\CustomElement;
-use Webwizardsusa\HtmlRefiner\Element;
 use Webwizardsusa\HtmlRefiner\RefinerDefinition;
 
 class MediaElement extends CustomElement
 {
-
     protected array $attributes = ['media', 'alt', 'link', 'align'];
+
     public function tag(): string
     {
         return 'fp-media';
@@ -35,7 +33,7 @@ class MediaElement extends CustomElement
                 /** @var FilapressMedia $media */
                 $media = $mediaItems[$element->getAttribute('media')];
                 if ($media) {
-                    $caption = trim($element->getContent()) ? $element->getContent(): null;
+                    $caption = trim($element->getContent()) ? $element->getContent() : null;
                     if ($caption) {
                         $element->setAttribute('caption', $caption);
                     }
@@ -53,6 +51,7 @@ class MediaElement extends CustomElement
             }
             $html = str_replace($element->raw(), $replace, $html);
         }
+
         return $html;
     }
 }

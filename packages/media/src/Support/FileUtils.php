@@ -133,6 +133,6 @@ class FileUtils
         }
 
         // If no extension exists, append the new one
-        return $filename . ".$newExtension";
+        return $filename.".$newExtension";
     }
 }

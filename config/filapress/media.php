@@ -8,10 +8,13 @@ return [
             disk: 'public',
             path: 'images/{{date:Y}}/{{date:m}}/{{file:filename}}.{{file:extension}}',
             responsiveSizes: [1200, 800, 600, 400],
-            variants:['card']
+            variants: ['card']
         ),
     ],
 
+    'media_model' => \Filapress\Media\Models\FilapressMedia::class,
+    'variant_model' => \Filapress\Media\Models\FilapressMediaVariant::class,
+    'usage_model' => \Filapress\Media\Models\FilapressMediaUsage::class,
     'responsive_sizes' => [1200, 800, 600, 400],
     'image_quality' => 90,
     'variant_disk' => 'public',
@@ -28,4 +31,5 @@ return [
     'image_variants' => [
         \App\Media\ImageVariants\Card::class,
     ],
+    'prune_after' => '1 hours',
 ];

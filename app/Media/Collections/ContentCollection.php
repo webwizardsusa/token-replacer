@@ -6,7 +6,6 @@ use Filapress\Media\MediaCollection;
 
 class ContentCollection extends MediaCollection
 {
-
     public function label(): string
     {
         return 'Content';
@@ -17,4 +16,3 @@ class ContentCollection extends MediaCollection
         return ['card'];
     }
 }
-

@@ -24,7 +24,6 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('123456'),
         ]);
 
-
         $this->call(MediaSeeder::class);
 
         Post::create([
@@ -38,14 +37,14 @@ class DatabaseSeeder extends Seeder
 BODY
         ]);
 
-        for($r=0; $r<20; $r++) {
+        for ($r = 0; $r < 20; $r++) {
             Post::create([
                 'title' => fake()->words(rand(5, 12), true),
                 'description' => fake()->paragraph,
                 'image_id' => FilapressMedia::inRandomOrder()->first()->id,
                 'user_id' => 1,
                 'published' => true,
-                'body' => '<p>' . fake()->paragraph . '</p>',
+                'body' => '<p>'.fake()->paragraph.'</p>',
             ]);
         }
     }

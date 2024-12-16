@@ -9,10 +9,11 @@ use Filapress\Media\MediaCollection;
 use Filapress\Media\MediaCollections;
 use Filapress\Media\MediaType;
 use Filapress\Media\MediaTypes;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -25,7 +26,7 @@ use Storage;
  */
 class FilapressMedia extends Model
 {
-    use HasFactory, HasUuids, SoftDeletes;
+    use HasFactory, HasUuids, Prunable, SoftDeletes;
 
     protected $table = 'filapress_media';
 
@@ -42,15 +43,12 @@ class FilapressMedia extends Model
         'filesize' => 'integer',
     ];
 
-
     public static function boot(): void
     {
         parent::boot();
 
-
-
         static::forceDeleting(function (FilapressMedia $media) {
-            $media->variants->each(fn(FilapressMediaVariant $variant) =>  $variant->delete());
+            $media->variants->each(fn (FilapressMediaVariant $variant) => $variant->delete());
             $media->getType()->deleteFiles($media);
         });
 
@@ -120,7 +118,14 @@ class FilapressMedia extends Model
         return null;
     }
 
-    public function render(?string $variant = null,array $attributes = [], bool $preview = false)
+    /**
+     * Renders the actual media item.
+     *
+     * @param  string|null  $variant  The name of the variant to render, or null for the original.
+     * @param  array  $attributes  Attributes to apply to the rendered output.
+     * @param  bool  $preview  True is this is an admin preview.
+     */
+    public function render(?string $variant = null, array $attributes = [], bool $preview = false): RenderAction
     {
         return $this->getType()->renderAction($this)
 
@@ -146,15 +151,23 @@ class FilapressMedia extends Model
 
     public function getCollection(): ?MediaCollection
     {
-        $mediaCollections =  app(MediaCollections::class);
+        $mediaCollections = app(MediaCollections::class);
         if ($this->collection && $mediaCollections->has($this->collection)) {
             return $mediaCollections->get($this->collection);
         }
+
         return null;
     }
 
-    public function usages()
+    public function usages(): HasMany
     {
         return $this->hasMany(FilapressMediaUsage::class, 'media_id');
+    }
+
+    public function prunable(): Builder
+    {
+        $interval = \DateInterval::createFromDateString(config('filapress.media.prune_after'));
+
+        return static::where('deleted_at', '<=', now()->sub($interval));
     }
 }

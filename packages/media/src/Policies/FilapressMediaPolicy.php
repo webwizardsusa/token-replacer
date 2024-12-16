@@ -25,9 +25,11 @@ class FilapressMediaPolicy
         return false;
     }
 
-    protected function checkPermission(string $permission, ?User $user,FilapressMedia $media): bool{
+    protected function checkPermission(string $permission, ?User $user, FilapressMedia $media): bool
+    {
         return $media->getType()->userCan($permission, $user, $media);
     }
+
     public function view(User $user, FilapressMedia $filapressMedia): bool
     {
         return $this->checkPermission('view', $user, $filapressMedia);

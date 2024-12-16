@@ -42,7 +42,6 @@ class EditFilapressMedia extends EditRecord
     protected function getForms(): array
     {
 
-
         $form = $this->makeForm()
             ->operation('create')
             ->model($this->getModel())
@@ -52,14 +51,15 @@ class EditFilapressMedia extends EditRecord
 
         $schema = $this->getType()->form($form, $this->getRecord());
         $collections = collect(app(MediaCollections::class)->all())
-            ->filter(fn(MediaCollection $type) => $type->canCreate())
-            ->mapWithKeys(fn(MediaCollection $type) => [$type->name() => $type->label()])
+            ->filter(fn (MediaCollection $type) => $type->canCreate())
+            ->mapWithKeys(fn (MediaCollection $type) => [$type->name() => $type->label()])
             ->toArray();
-        if (!empty($collections)) {
+        if (! empty($collections)) {
             $schema[] = Select::make('collection')
                 ->options($collections);
         }
         $form->schema($schema);
+
         return [
             'form' => $this->form($form),
         ];

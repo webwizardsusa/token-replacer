@@ -15,28 +15,29 @@ use Webwizardsusa\TokenReplace\Transformers\ArrayTransformer;
  */
 trait MediaHasVariations
 {
-    function mediaHasVariationsAfterAttach(FilapressMedia $media): FilapressMedia
+    public function mediaHasVariationsAfterAttach(FilapressMedia $media): FilapressMedia
     {
         $this->generateVariants($media);
+
         return $media;
     }
-
 
     public function generateVariants(FilapressMedia $media): FilapressMedia
     {
         $source = ImageFactory::make()->fromStorage($media->disk, $media->path);
 
-        foreach( $this->getVariations($media) as $variant) {
+        foreach ($this->getVariations($media) as $variant) {
             $this->generateVariant($media, $variant, $source);
         }
+
         return $media;
     }
 
     public function generateVariant(FilapressMedia $media, string $variant, ?Image $source = null): FilapressMedia
     {
         $source = $source ?? ImageFactory::make()->fromStorage($media->disk, $media->path);
-        $existing = $media->variants->first(fn(FilapressMediaVariant $model) => $model->name === $variant);
-        if (!$media->id) {
+        $existing = $media->variants->first(fn (FilapressMediaVariant $model) => $model->name === $variant);
+        if (! $media->id) {
             $media->save();
         }
         if ($existing) {
@@ -46,7 +47,7 @@ trait MediaHasVariations
             $existing->fill([
                 'media_id' => $media->id,
                 'name' => $variant,
-                'disk' => config('filapress.media.variant_disk')
+                'disk' => config('filapress.media.variant_disk'),
             ]);
         }
 
@@ -79,8 +80,8 @@ trait MediaHasVariations
         return $media;
     }
 
-
-    protected function getVariations(FilapressMedia $media): array {
+    protected function getVariations(FilapressMedia $media): array
+    {
         $variants = $this->config('variants', []);
         if ($collectionVariants = $media->getCollection()?->variants()) {
             $variants = array_unique(array_merge($variants, $collectionVariants));
@@ -88,6 +89,4 @@ trait MediaHasVariations
 
         return $variants;
     }
-
-
 }

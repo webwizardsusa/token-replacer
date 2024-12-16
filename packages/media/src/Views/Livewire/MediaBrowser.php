@@ -1,6 +1,7 @@
 <?php
 
 namespace Filapress\Media\Views\Livewire;
+
 use Arr;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;

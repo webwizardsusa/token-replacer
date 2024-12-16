@@ -7,7 +7,6 @@ Alpine.data('themeSelector', () => ({
     theme: 'auto',
     dropdownOpen: false,
     init() {
-        console.log("HELLO");
         this.$watch('theme', (value) => {
             this.updateTheme();
         })
