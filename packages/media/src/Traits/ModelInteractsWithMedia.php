@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 trait ModelInteractsWithMedia
 {
-    public static function bootModelInteractsWithMedia()
+    public static function bootModelInteractsWithMedia(): void
     {
         static::saved(function ($model) {
             $model->syncMediaUsage();
@@ -26,6 +26,11 @@ trait ModelInteractsWithMedia
         });
     }
 
+    /**
+     * Synchronize the media usage for the current model by updating the database.
+     * Removes obsolete media usage entries and adds new ones based on the current
+     * media items associated with the model.
+     */
     public function syncMediaUsage(): void
     {
         $items = $this->getMediaItems();

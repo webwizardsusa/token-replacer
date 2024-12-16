@@ -336,7 +336,10 @@ As stated above, this package is currently under heavy development. Future plans
 1. Ability to filter by width and height.
 2. Artisan commands to automatically regenerate responsive images and variants
 3. Artisan commands to bootstrap variants, collections and types.
-4. Much more still floating around.
+4. Add drag and drop support for media field
+5. Add drag and drop support for Rich Editor
+6. Add paste support for Rich Editor.
+7. Write tests!!!!
 
 
 

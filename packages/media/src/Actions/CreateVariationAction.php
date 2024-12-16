@@ -4,7 +4,9 @@ namespace Filapress\Media\Actions;
 
 use Closure;
 use Filapress\Media\Support\FileUtils;
+use File;
 use Intervention\Image\Image;
+use Storage;
 use Symfony\Component\Mime\MimeTypes;
 
 class CreateVariationAction
@@ -25,6 +27,14 @@ class CreateVariationAction
         $this->action = $action;
     }
 
+    /**
+     * Sets the format and quality for the current instance.
+     *
+     * @param string|null $format The desired format, or null to unset.
+     * @param int $quality The quality value, defaults to 90.
+     *
+     * @return static
+     */
     public function format(?string $format, int $quality = 90): static
     {
         $this->format = $format;
@@ -33,6 +43,12 @@ class CreateVariationAction
         return $this;
     }
 
+    /**
+     * Set the sizes for the current instance.
+     *
+     * @param array $sizes An array of sizes to be assigned.
+     * @return static Returns the current instance with assigned sizes.
+     */
     public function sizes(array $sizes): static
     {
         $this->sizes = $sizes;
@@ -45,11 +61,30 @@ class CreateVariationAction
         return $this->name;
     }
 
+    /**
+     * Create a new instance of the class with the specified name and action.
+     *
+     * @param string $name The descriptive name for the instance.
+     * @param Closure $action The action to be associated with the instance.
+     * @return static Returns a new instance of the class.
+     */
     public static function make(string $name, Closure $action): static
     {
         return app(static::class, compact('name', 'action'));
     }
 
+    /**
+     * Generates an image along with its responsive sizes, saving them to the specified disk and path.
+     *
+     * @param Image $source The source image to be processed.
+     * @param string|null $disk The disk where the image and its sizes will be stored. Null if not specified.
+     * @param string|null $path The path where the image and its sizes will be stored. Null to return raw images.
+     *
+     * @return array|null Returns an array containing details of the generated image and its responsive sizes,
+     *                    or null if the generation fails. The array includes:
+     *                    - The main image data with details such as disk, path, width, height, filesize, and mime type.
+     *                    - An array of sizes with corresponding details for each size.
+     */
     public function generate(Image $source, ?string $disk, ?string $path): ?array
     {
 
@@ -60,7 +95,6 @@ class CreateVariationAction
         }
 
         $results = [
-            'image' => null,
             'sizes' => [],
         ];
 
@@ -102,8 +136,14 @@ class CreateVariationAction
         return $results;
     }
 
-    protected function fileData(Image $image, string $filename, ?string $disk): array {}
 
+    /**
+     * Generates a resized image based on the specified size.
+     *
+     * @param int $size The desired width for the resized image.
+     * @param Image $image The original image to be resized.
+     * @return Image Returns a new resized image instance.
+     */
     protected function generateSize(int $size, Image $image): Image
     {
         $instance = clone $image;
@@ -111,15 +151,32 @@ class CreateVariationAction
         return $instance->resize(width: $size);
     }
 
+    /**
+     * Retrieves the size of a file in bytes from the specified path.
+     *
+     * @param string $path The path to the file.
+     * @param string|null $disk The name of the disk to retrieve the file size from.
+     *                          If null, the default file system will be used.
+     * @return int Returns the size of the file in bytes.
+     */
     protected function fileSize(string $path, ?string $disk): int
     {
         if ($disk) {
-            return \Storage::disk($disk)->size($path);
+            return Storage::disk($disk)->size($path);
         } else {
-            return \File::size($path);
+            return File::size($path);
         }
     }
 
+    /**
+     * Saves an image file to the specified path with optional modifications.
+     *
+     * @param Image $image The image instance to be saved.
+     * @param string $path The file path where the image will be stored.
+     * @param string|null $disk The storage disk to use. If null, the local filesystem is used.
+     * @param int|null $size An optional size to append to the file name. Default is null.
+     * @return string Returns the path where the image was saved.
+     */
     protected function saveFile(Image $image, string $path, ?string $disk, ?int $size = null): string
     {
         $append = '-'.$this->name();
@@ -134,9 +191,9 @@ class CreateVariationAction
 
         $encoded = $image->encodeByExtension(pathinfo($path, PATHINFO_EXTENSION), quality: $this->quality);
         if ($disk) {
-            \Storage::disk($disk)->put($path, $encoded);
+            Storage::disk($disk)->put($path, $encoded);
         } else {
-            \File::put($path, $encoded);
+            File::put($path, $encoded);
         }
 
         return $path;

@@ -28,38 +28,21 @@ class DemoSave extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
 
         $this->createPostsDump();
         $this->createOEmbedsDump();
-        $this->createUsers();
-        $this->createMedia();
+        $this->createUsersDump();
         $this->createMediaDump();
         $this->output->success('Done');
     }
 
-    public function createPosts(): void
-    {
-        Post::truncate();
-        $data = json_decode(file_get_contents(base_path('docs/assets/posts.json')), true);
-        foreach ($data as $item) {
-            Post::create($item);
-        }
-    }
+
 
     public function createPostsDump(): void
     {
         file_put_contents(base_path('docs/assets/posts.json'), json_encode(Post::all()->toArray()));
-    }
-
-    public function createUsers(): void
-    {
-        User::truncate();
-        $data = json_decode(file_get_contents(base_path('docs/assets/users.json')), true);
-        foreach ($data as $item) {
-            User::create($item);
-        }
     }
 
     public function createUsersDump(): void
@@ -77,25 +60,6 @@ class DemoSave extends Command
 
     }
 
-    public function createMedia(): void
-    {
-        FilapressMedia::all()
-            ->each(fn ($item) => $item->forceDelete());
-        FilapressMediaUsage::truncate();
-        \File::copyDirectory(base_path('docs/assets/media/'), storage_path('app/public/'));
-        $data = json_decode(file_get_contents(base_path('docs/assets/media.json')), true);
-        foreach ($data as $item) {
-            $media = FilapressMedia::create($item);
-            $media->getType()->generateThumbnail($media);
-            $media->getType()->generateResponsive($media);
-            //   $media->getType()->generateVariants($media);
-        }
-
-        $data = json_decode(file_get_contents(base_path('docs/assets/media-usage.json')), true);
-        foreach ($data as $item) {
-            FilapressMediaUsage::create($item);
-        }
-    }
 
     public function createMediaDump(): void
     {
@@ -110,16 +74,6 @@ class DemoSave extends Command
         file_put_contents(base_path('docs/assets/media-usage.json'), json_encode(FilapressMediaUsage::all()->toArray()));
     }
 
-    protected function createOEmbeds(): void
-    {
-        OEmbed::truncate();
-        $dir = base_path('docs/assets/oembeds.json');
-        $data = file_get_contents($dir);
-        $data = json_decode($data, true);
-        foreach ($data as $item) {
-            OEmbed::create($item);
-        }
-    }
 
     protected function createOEmbedsDump(): void
     {

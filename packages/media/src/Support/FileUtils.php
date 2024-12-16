@@ -7,6 +7,19 @@ use Symfony\Component\Mime\MimeTypes;
 
 class FileUtils
 {
+    /**
+     * Converts a human-readable file size string into its equivalent size in bytes.
+     *
+     * @param string $size The file size string, which should be in a format like "10k", "5m", or "2g".
+     *                     Units are case-insensitive and supported units are:
+     *                     - "k" for kilobytes
+     *                     - "m" for megabytes
+     *                     - "g" for gigabytes
+     *
+     * @return int The size in bytes.
+     *
+     * @throws InvalidArgumentException If the provided size string is not in a valid format.
+     */
     public static function convertFriendlyToBytes(string $size): int
     {
         $size = trim(strtolower($size));
@@ -28,6 +41,14 @@ class FileUtils
         throw new InvalidArgumentException("Invalid size format: $size");
     }
 
+    /**
+     * Converts a size in bytes into a human-readable format with appropriate units.
+     *
+     * @param int $bytes The size in bytes to be converted.
+     * @param int $precision The number of decimal places to include in the formatted output (default is 2).
+     *
+     * @return string The formatted size string with the appropriate unit (e.g., "10.24 KB", "5.00 MB").
+     */
     public static function convertBytesToFriendly(int $bytes, int $precision = 2): string
     {
         $units = ['B', 'KB', 'MB', 'GB'];
@@ -39,11 +60,26 @@ class FileUtils
         return round($bytes, $precision).' '.$units[$pow];
     }
 
+    /**
+     * Removes duplicate slashes from the given path.
+     *
+     * @param string $path The file or directory path to clean.
+     * @return string The cleaned path with duplicate slashes replaced by a single slash.
+     */
     public static function cleanPath(string $path): string
     {
         return preg_replace('/\/{2,}/', '/', $path);
     }
 
+    /**
+     * Resolves a sequence of path segments into a single, normalized path.
+     *
+     * Handles relative (`.`) and parent (`..`) references, removes redundant slashes,
+     * and respects whether the resolved path is absolute or relative.
+     *
+     * @param string ...$segments A variable number of path segments to resolve.
+     * @return string The resolved and normalized file or directory path.
+     */
     public static function resolvePath(string ...$segments): string
     {
         // Start with an empty stack to build the resolved path
@@ -82,6 +118,13 @@ class FileUtils
         return ($absolute ? '/' : '').implode('/', $stack);
     }
 
+    /**
+     * Appends a specified string to the filename within the given file path.
+     *
+     * @param string $path The original file path.
+     * @param string $append The string to append to the filename.
+     * @return string The updated file path with the appended string in the filename.
+     */
     public static function appendFileName(string $path, string $append): string
     {
         $directory = dirname($path);
@@ -95,6 +138,12 @@ class FileUtils
         return rtrim($directory, '/').'/'.$newFilename.'.'.$extension;
     }
 
+    /**
+     * Retrieves the file extension associated with the given MIME type.
+     *
+     * @param string $mimeType The MIME type to resolve to a file extension.
+     * @return string|null The first file extension matching the MIME type, or null if none is found.
+     */
     public static function extensionFromMime(string $mimeType): ?string
     {
         $mimeTypes = new MimeTypes;
@@ -104,11 +153,23 @@ class FileUtils
         return $extensions[0] ?? null;
     }
 
+    /**
+     * Converts the given filename to snake_case format.
+     *
+     * @param string $filename The original filename.
+     * @return string The filename converted to snake_case.
+     */
     public static function cleanFilename(string $filename): string
     {
         return \Str::snake($filename);
     }
 
+    /**
+     * Retrieves the MIME type associated with a file extension from the given path.
+     *
+     * @param string $path The file path or file extension.
+     * @return string|null The MIME type corresponding to the file's extension, or null if not found.
+     */
     public static function mimeTypeFromExtension(string $path): ?string
     {
         $extension = str_contains($path, '.') ? pathinfo($path, PATHINFO_EXTENSION) : $path;
@@ -118,6 +179,13 @@ class FileUtils
         return $mimes[0];
     }
 
+    /**
+     * Replaces or appends a file's extension with a specified new extension.
+     *
+     * @param string $filename The original file name, including its current extension if it exists.
+     * @param string $newExtension The new file extension to set, with or without a leading period.
+     * @return string The modified file name with the new extension applied.
+     */
     public static function replaceExtension(string $filename, string $newExtension): string
     {
         $newExtension = ltrim($newExtension, '.');

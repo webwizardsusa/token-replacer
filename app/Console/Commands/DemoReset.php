@@ -41,10 +41,7 @@ class DemoReset extends Command
         $this->createOEmbeds();
         $this->info('Creating posts');
         $this->createPosts();
-        // $this->createPostsDump();
-        //$this->createUsers();
-        //$this->createMedia();
-        // $this->createMediaDump();
+
     }
 
     public function createPosts(): void
@@ -56,10 +53,7 @@ class DemoReset extends Command
         }
     }
 
-    public function createPostsDump(): void
-    {
-        file_put_contents(base_path('docs/assets/posts.json'), json_encode(Post::all()->toArray()));
-    }
+
 
     public function createUsers(): void
     {
@@ -68,21 +62,6 @@ class DemoReset extends Command
         foreach ($data as $item) {
             User::create($item);
         }
-    }
-
-    public function createUsersDump(): void
-    {
-        $users = User::all()
-            ->map(function (User $user) {
-                $data = $user->toArray();
-                $data['password'] = $user->password;
-                $data['remember_token'] = $user->remember_token;
-
-                return $data;
-            });
-
-        file_put_contents(base_path('docs/assets/users.json'), json_encode($users->toArray()));
-
     }
 
     public function createMedia(): void
@@ -105,18 +84,6 @@ class DemoReset extends Command
         }
     }
 
-    public function createMediaDump(): void
-    {
-        $media = FilapressMedia::all();
-        foreach ($media as $item) {
-            $target = base_path('docs/assets/media/'.$item->path);
-            $directory = pathinfo($target, PATHINFO_DIRNAME);
-            \File::ensureDirectoryExists($directory);
-            \File::copy(storage_path('app/public/'.$item->path), $target);
-        }
-        file_put_contents(base_path('docs/assets/media.json'), json_encode($media->toArray()));
-        file_put_contents(base_path('docs/assets/media-usage.json'), json_encode(FilapressMediaUsage::all()->toArray()));
-    }
 
     protected function createOEmbeds(): void
     {
@@ -129,10 +96,4 @@ class DemoReset extends Command
         }
     }
 
-    protected function createOEmbedsDump(): void
-    {
-        $dir = base_path('docs/assets/oembeds.json');
-        $oembeds = OEmbed::all();
-        file_put_contents($dir, json_encode($oembeds->toArray()));
-    }
 }

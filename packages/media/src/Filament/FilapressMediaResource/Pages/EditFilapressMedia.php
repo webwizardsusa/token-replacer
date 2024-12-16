@@ -7,7 +7,6 @@ use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Pages\EditRecord;
-use Filapress\Media\Actions\UpdateMediaAction;
 use Filapress\Media\Filament\FilapressMediaResource;
 use Filapress\Media\MediaCollection;
 use Filapress\Media\MediaCollections;
@@ -67,6 +66,6 @@ class EditFilapressMedia extends EditRecord
 
     protected function handleRecordUpdate(FilapressMedia|Model $record, array $data): Model
     {
-        return UpdateMediaAction::run($record, $data);
+        return $this->getType()->update($record, $data);
     }
 }

@@ -19,6 +19,7 @@ class MediaElement extends CustomElement
     {
         $elements = $this->extract($html);
         $mediaIds = [];
+        // Since we can't eager load these, we'll parse out all our medias and load them in a single query.
         foreach ($elements as $element) {
             if ($element->hasAttribute('media')) {
                 $mediaIds[$element->getAttribute('media')] = $element->getAttribute('media');
